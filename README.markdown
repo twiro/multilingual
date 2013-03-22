@@ -16,9 +16,9 @@ Multilanguage extension for [Symphony CMS][1].
 
 3.  Go to System > Preferences and provide a comma-separated list of [ISO 639-1][2] language codes in the "Multilingual"-section of your preferences screen.
 
-4. The first language in your list is considered the default language.
-
 ![Preferences][4]
+
+The first language in your list is considered the default language.
 
 The `$languages` and `$language` parameters will be added to the Page Parameters.
 
