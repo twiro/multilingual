@@ -8,10 +8,6 @@
 
 Multilanguage extension for [Symphony CMS][1].
 
-This extension only provides basic functionality for filtering datasources and adds additional elements for the current language in your XML output.
-
-Other parts of your multilingual project can be translated by using additional approaches (with a minimal amount of additional extensions) as suggested below.
-
 ## Installation and Setup
 
 1.  Upload the "multilingual" folder to your Symphony extensions folder.
@@ -77,6 +73,12 @@ While you always have to manually select all languages for a field in the data s
         <title-de handle="the-extremes-of-good-and-evil">Das höchste Gut und Übel</title-de>
         <title handle="the-extremes-of-good-and-evil">The Extremes of Good and Evil</title>
     </entry>
+
+**That's it.**
+
+This extension only provides basic functionality for filtering datasources and adds additional elements for the current language in your XML output.
+
+Other parts of your multilingual project can be translated by using additional approaches (with a minimal amount of additional extensions) as suggested below.
 
 ## Templates / Static Texts
 
