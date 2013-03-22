@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<extension id="multilingual" status="experimental" xmlns="http://symphony-cms.com/schemas/extension/1.0">
+	<name>Multilingual</name>
+	<description>Manipulates datasources for multilingual filtering and output.</description>
+	<authors>
+		<author>
+			<name>webninjas</name>
+			<website>http://webninjas.net</website>
+		</author>
+	</authors>
+	<releases>
+		<release version="1.0" date="2013-03-22" min="2.3">
+			- Initial release
+		</release>
+	</releases>
+</extension>
