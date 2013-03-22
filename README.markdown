@@ -10,7 +10,7 @@ Multilanguage extension for [Symphony CMS][1].
 
 ## Installation and Setup
 
-1.  Upload the "multilingual" folder to your Symphony 'extensions' folder.
+1.  Upload the "multilingual" folder to your Symphony extensions folder.
 
 2.  Enable it by selecting "Multilingual" under System > Extensions, choose Enable from the with-selected menu, then click Apply.
 
