@@ -82,7 +82,7 @@ While you always have to manually select all languages for a field in the data s
 
 ### Other
 
-This extension only provides basic functionality for filtering datasources and providing additional elements for the current language in your XML output.
+This extension only provides basic functionality for filtering datasources and adds additional elements for the current language in your XML output.
 
 Other parts of your multilingual project can be translated by using additional approaches (with a minimal amount of additional extensions) as suggested below.
 
