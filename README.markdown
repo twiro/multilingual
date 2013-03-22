@@ -8,6 +8,10 @@
 
 Multilanguage extension for [Symphony CMS][1].
 
+This extension only provides basic functionality for filtering datasources and adds additional elements for the current language in your XML output.
+
+Other parts of your multilingual project can be translated by using additional approaches (with a minimal amount of additional extensions) as suggested below.
+
 ## Installation and Setup
 
 1.  Upload the "multilingual" folder to your Symphony extensions folder.
@@ -30,11 +34,7 @@ The `$languages` and `$language` parameters will be added to the Page Parameters
         <language>en</language>
     </params>
 
-## Workflow
-
-### Sections
-
-#### Fields
+## Sections: Fields
 
 The very basic approach of this extension doesn't require specific multilingual fields.
 
@@ -50,15 +50,13 @@ Fields for the same content in different languages have to have the same handle,
 
 Fields for additional languages can always be optional, the extension falls back to the default language for a specific field if no translation is provided.
 
-#### UI
+## Sections: UI
 
 To provide your clients with a clean and simple user interface for adding and editing section entries, you can use additional UI extensions like [Publish Tabs][3].
 
 ![Sections: UI][6]
 
-### Data Sources
-
-#### Filters
+## Data Sources: Filters
 
 You only have to add the fields by which you want to filter your data sources in the default language.
 
@@ -66,7 +64,7 @@ You only have to add the fields by which you want to filter your data sources in
 
 The extension takes care of filtering your entries in the current language and falls back to the default language for a specific filter, if no translation is provided.
 
-#### Output
+## Data Sources: Output
 
 While you always have to manually select all languages for a field in the data source editor's "XML Output"-section...
 
@@ -80,21 +78,15 @@ While you always have to manually select all languages for a field in the data s
         <title handle="the-extremes-of-good-and-evil">The Extremes of Good and Evil</title>
     </entry>
 
-### Other
-
-This extension only provides basic functionality for filtering datasources and adds additional elements for the current language in your XML output.
-
-Other parts of your multilingual project can be translated by using additional approaches (with a minimal amount of additional extensions) as suggested below.
-
-#### Templates / Static Texts
+## Templates / Static Texts
 
 Stay tuned...
 
-#### Page handles
+## Page handles
 
 Stay tuned...
 
-#### Domain mapping
+## Domain mapping
 
 Stay tuned...
 
