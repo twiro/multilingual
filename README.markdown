@@ -74,7 +74,7 @@ While you always have to manually select all languages for a field in the data s
         <title handle="the-extremes-of-good-and-evil">The Extremes of Good and Evil</title>
     </entry>
 
-**That's it.**
+## That's it
 
 This extension only provides basic functionality for filtering datasources and adds additional elements for the current language in your XML output.
 
