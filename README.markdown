@@ -2,7 +2,7 @@
 
 - Status: experimental
 - Version: 1.0
-- Release Date: 2013-03-22
+- Release Date: 2013-04-09
 - Requirements: Symphony 2.3.2
 - Author: Jens Scherbl
 
@@ -20,7 +20,7 @@ Multilanguage extension for [Symphony CMS][1].
 
 The first language in your list is considered the default language.
 
-The `$languages` and `$language` parameters will be added to the Page Parameters.
+The `$languages`, `$language` and `$root-ml` parameters will be added to the Page Parameters.
 
     <params>
         <languages>
@@ -28,6 +28,7 @@ The `$languages` and `$language` parameters will be added to the Page Parameters
             <item handle="de">de</item>
         </languages>
         <language>en</language>
+        <root-ml>/en</root-ml>
     </params>
 
 ## Sections: Fields
@@ -36,7 +37,7 @@ The very basic approach of this extension doesn't require specific multilingual 
 
 Instead, you can simply use any available fields you like.
 
-A possible downside (at least for lazy devs) is that you have to add the fields you want to be multilingual for each language manually.
+A possible downside (at least for lazy developers) is that you have to add the fields you want to be multilingual for each language manually.
 
 ![Sections: Fields][5]
 

@@ -1,15 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <extension id="multilingual" status="experimental" xmlns="http://symphony-cms.com/schemas/extension/1.0">
 	<name>Multilingual</name>
-	<description>Manipulates datasources for multilingual filtering and output.</description>
+	<description lang="en">Manipulates datasources for multilingual filtering and output.</description>
+	<url type="repo">https://github.com/jensscherbl/Multilingual</url>
+	<types>
+		<type>Multilingual</type>
+	</types>
 	<authors>
 		<author>
-			<name>webninjas</name>
+			<name github="jensscherbl" symphony="jensscherbl" twitter="jensscherbl">Jens Scherbl</name>
 			<website>http://webninjas.net</website>
 		</author>
 	</authors>
 	<releases>
-		<release version="1.0" date="2013-03-22" min="2.3.2">
+		<release version="1.0" date="2013-04-09" min="2.3.2">
 			- Initial release
 		</release>
 	</releases>

@@ -102,7 +102,7 @@
 
                     // check if current path has language code
 
-                    if (preg_match('/^\/([a-z]{2})\//', $context['page'], $match)) {
+                    if (!self::$language && preg_match('/^\/([a-z]{2})\//', $context['page'], $match)) {
 
                         // check if language is supported
 
@@ -170,6 +170,9 @@
 
             Frontend::Page()->_param['languages'] = self::$languages;
             Frontend::Page()->_param['language']  = self::$language;
+            Frontend::Page()->_param['root-ml']   = Frontend::Page()->_param['mapped'] === 'yes' ?
+                                                    Frontend::Page()->_param['root'] :
+                                                    Frontend::Page()->_param['root'] . '/' . self::$language;
         }
 
         // datasource
