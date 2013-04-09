@@ -3,6 +3,7 @@
 	<name>Multilingual</name>
 	<description lang="en">Manipulates datasources for multilingual filtering and output.</description>
 	<url type="repo">https://github.com/jensscherbl/Multilingual</url>
+	<url type="discuss">http://getsymphony.com/discuss/thread/99525/</url>
 	<types>
 		<type>Multilingual</type>
 	</types>
