@@ -97,8 +97,8 @@ Stay tuned...
 [1]: http://getsymphony.com
 [2]: http://en.wikipedia.org/wiki/ISO_639-1
 [3]: http://symphonyextensions.com/extensions/publish_tabs/
-[4]: https://github.com/jensscherbl/multilingual/blob/master/docs/assets/images/preferences.png
-[5]: https://github.com/jensscherbl/multilingual/blob/master/docs/assets/images/sections_fields.png
-[6]: https://github.com/jensscherbl/multilingual/blob/master/docs/assets/images/sections_ui.png
-[7]: https://github.com/jensscherbl/multilingual/blob/master/docs/assets/images/ds_filters.png
-[8]: https://github.com/jensscherbl/multilingual/blob/master/docs/assets/images/ds_output.png
+[4]: http://raw.github.com/jensscherbl/multilingual/master/docs/assets/images/preferences.png
+[5]: http://raw.github.com/jensscherbl/multilingual/master/docs/assets/images/sections_fields.png
+[6]: http://raw.github.com/jensscherbl/multilingual/master/docs/assets/images/sections_ui.png
+[7]: http://raw.github.com/jensscherbl/multilingual/master/docs/assets/images/ds_filters.png
+[8]: http://raw.github.com/jensscherbl/multilingual/master/docs/assets/images/ds_output.png
