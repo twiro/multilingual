@@ -1,12 +1,12 @@
 # Multilingual
 
 - Status: experimental
-- Version: 1.0
-- Release Date: 2013-04-09
+- Version: 1.1
+- Release Date: 2013-05-12
 - Requirements: Symphony 2.3.2
 - Author: Jens Scherbl
 
-Multilanguage extension for [Symphony CMS][1].
+Multilingual extension for [Symphony CMS][1]. Provides basic helpers for multilingual projects.
 
 ## Installation and Setup
 
@@ -20,7 +20,7 @@ Multilanguage extension for [Symphony CMS][1].
 
 The first language in your list is considered the default language.
 
-The `$languages`, `$language` and `$root-ml` parameters will be added to the Page Parameters.
+The `$languages`, `$language` and `$multilingual` parameters will be added to the Page Parameters.
 
     <params>
         <languages>
@@ -28,7 +28,7 @@ The `$languages`, `$language` and `$root-ml` parameters will be added to the Pag
             <item handle="de">de</item>
         </languages>
         <language>en</language>
-        <root-ml>/en</root-ml>
+        <multilingual>yes</multilingual>
     </params>
 
 ## Sections: Fields
@@ -96,8 +96,8 @@ Stay tuned...
 [1]: http://getsymphony.com
 [2]: http://en.wikipedia.org/wiki/ISO_639-1
 [3]: http://symphonyextensions.com/extensions/publish_tabs/
-[4]: https://github.com/jensscherbl/multilingual/raw/master/docs/assets/images/preferences.png
-[5]: https://github.com/jensscherbl/multilingual/raw/master/docs/assets/images/sections_fields.png
-[6]: https://github.com/jensscherbl/multilingual/raw/master/docs/assets/images/sections_ui.png
-[7]: https://github.com/jensscherbl/multilingual/raw/master/docs/assets/images/ds_filters.png
-[8]: https://github.com/jensscherbl/multilingual/raw/master/docs/assets/images/ds_output.png
+[4]: https://raw.github.com/jensscherbl/multilingual/master/docs/assets/images/preferences.png
+[5]: https://raw.github.com/jensscherbl/multilingual/master/docs/assets/images/sections_fields.png
+[6]: https://raw.github.com/jensscherbl/multilingual/master/docs/assets/images/sections_ui.png
+[7]: https://raw.github.com/jensscherbl/multilingual/master/docs/assets/images/ds_filters.png
+[8]: https://raw.github.com/jensscherbl/multilingual/master/docs/assets/images/ds_output.png
