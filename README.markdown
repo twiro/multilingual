@@ -6,7 +6,7 @@
 - Requirements: Symphony 2.3.2
 - Author: Jens Scherbl
 
-Multilingual extension for [Symphony CMS][1]. Provides basic helpers for multilingual projects.
+Multilingual extension for [Symphony CMS][1].
 
 ## Installation and Setup
 
