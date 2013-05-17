@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <extension id="multilingual" status="experimental" xmlns="http://symphony-cms.com/schemas/extension/1.0">
 	<name>Multilingual</name>
-	<description lang="en">Manipulates datasources for multilingual filtering and output.</description>
+	<description lang="en">Provides basic helpers for multilingual projects.</description>
 	<url type="repo">https://github.com/jensscherbl/Multilingual</url>
 	<url type="discuss">http://getsymphony.com/discuss/thread/99525/</url>
 	<types>
@@ -14,6 +14,12 @@
 		</author>
 	</authors>
 	<releases>
+		<release version="1.1" date="2013-05-17" min="2.3.2" max="2.3.x">
+			- Fixed a critical issue where output parameters weren't passed correctly to chained datasources
+			- Removed `$root-ml`-parameter
+			- Introduced `$multilingual`-parameter
+			- Minor refinements
+		</release>
 		<release version="1.0" date="2013-04-09" min="2.3.2" max="2.3.x">
 			- Initial release
 		</release>
