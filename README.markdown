@@ -2,7 +2,7 @@
 
 - Status: experimental
 - Version: 1.1
-- Release Date: 2013-05-12
+- Release Date: 2013-05-17
 - Requirements: Symphony 2.3.2
 - Author: Jens Scherbl
 
