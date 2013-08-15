@@ -323,44 +323,57 @@
 
                     // check if element handle is multilingual
 
-                    if (preg_match('/-' . self::$languages[0] . '$/', $element_handle)) {
+                    if (preg_match('/-([a-z]{2})$/', $element_handle, $match)) {
 
-                        // if current language is not default
+                        // check if language is supported
 
-                        if (self::$language !== self::$languages[0]) {
+                        if (in_array($match[1], self::$languages)) {
 
-                            // get current language element handle
+                            // remove language segment from element handle
 
-                            $element2_handle = preg_replace('/-' . self::$languages[0] . '$/', '-' . self::$language, $element_handle);
+                            $element_handle = preg_replace('/-' . $match[1] . '$/', '', $element_handle);
+                            $element_mode   = $element->getAttribute('mode');
 
-                            // get current language element
+                            // set new name and language
 
-                            $element2 = $entry->getChildByName($element2_handle, 0);
+                            $element->setName($element_handle);
+                            $element->setAttribute('lang', $match[1]);
+
+                            // store element
+
+                            $multilingual_elements[$element_handle . ($element_mode ? ':' . $element_mode : '')][$match[1]] = $element;
+
+                            // remove element
+
+                            $entry->removeChildAt($element_index);
+                        }
+                    }
+                }
+
+                if (is_array($multilingual_elements)) {
+
+                    foreach ($multilingual_elements as $element_handle => $element) {
+
+                        foreach (self::$languages as $language) {
+
+                            // check if element exists for each language
+
+                            if (!isset($element[$language]) || !(str_replace('<![CDATA[]]>', '', trim($element[$language]->getValue())) || $element[$language]->getNumberOfChildren())) {
+
+                                // fallback to default language if missing or empty
+
+                                if (isset($element[self::$languages[0]])) {
+
+                                    $element[$language] = clone $element[self::$languages[0]];
+
+                                    $element[$language]->setAttribute('lang', $language);
+                                }
+                            }
                         }
 
-                        // create new element handle
+                        // readd elements
 
-                        $element3_handle = preg_replace('/-' . self::$languages[0] . '$/', '', $element_handle);
-
-                        // create new element from
-                        // current or default language
-
-                        if ($element2 && str_replace('<![CDATA[]]>', '', trim($element2->getValue()))) {
-
-                            $element3 = new XMLElement($element3_handle, $element2->getValue(), $element2->getAttributes());
-
-                            $element3->setChildren($element2->getChildren());
-
-                        } else {
-
-                            $element3 = new XMLElement($element3_handle, $element->getValue(), $element->getAttributes());
-
-                            $element3->setChildren($element->getChildren());
-                        }
-
-                        // add new element to entry
-
-                        $entry->appendChild($element3);
+                        $entry->appendChildArray($element);
                     }
                 }
             }
