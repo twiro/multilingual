@@ -126,16 +126,6 @@
 
                         header('Location: ' . $context['params']['root'] . '/' . self::$language . '/'); exit;
                     }
-
-                    // add page type
-
-                    $context['params']['multilingual'] = 'no';
-
-                } else {
-
-                    // add page type
-
-                    $context['params']['multilingual'] = 'yes';
                 }
 
                 // set params
