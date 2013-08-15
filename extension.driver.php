@@ -2,7 +2,7 @@
 
     Class Extension_Multilingual extends Extension
     {
-        public static $languages, $language, $datasource;
+        public static $languages, $language;
 
         // delegates
 
