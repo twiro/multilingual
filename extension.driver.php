@@ -96,14 +96,6 @@
                         // set language
 
                         self::$language = $match[1];
-
-                        // remove language segment from current path
-
-                        $context['page'] = preg_replace('/^\/' . $match[1] . '\//', '/', $context['page']);
-
-                        // special treatment for root page
-
-                        $context['page'] = ($context['page'] !== '/') ? $context['page'] : null;
                     }
                 }
             }
