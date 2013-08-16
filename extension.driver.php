@@ -75,7 +75,7 @@ class Extension_Multilingual extends Extension
         $context['wrapper']->appendChild($group);
     }
 
-    // path
+    // detect & redirect language
 
     public function frontendPrePageResolve($context)
     {
@@ -85,18 +85,35 @@ class Extension_Multilingual extends Extension
 
             self::$languages = explode(',', str_replace(' ', '', self::$languages));
 
-            // check if current path has language segment
+            // detect language from path
 
             if (preg_match('/^\/([a-z]{2})\//', $context['page'], $match)) {
 
-                // check if language is supported
+                // set language from path
 
-                if (in_array($match[1], self::$languages)) {
+                self::$language = $match[1];
 
-                    // set language
+            } else {
 
-                    self::$language = $match[1];
-                }
+                // detect language from browser
+
+                self::$language = substr($_SERVER['HTTP_ACCEPT_LANGUAGE'], 0, 2);
+            }
+
+            // check if language is supported
+
+            if (!in_array(self::$language, self::$languages)) {
+
+                // set to default otherwise
+
+                self::$language = self::$languages[0];
+            }
+
+            // redirect root page
+
+            if (!$context['page']) {
+
+                header('Location: ' . URL . '/' . self::$language . '/'); exit;
             }
         }
     }
@@ -107,27 +124,6 @@ class Extension_Multilingual extends Extension
     {
         if (self::$languages) {
 
-            if (!self::$language) {
-
-                // detect browser language
-
-                self::$language = substr($_SERVER['HTTP_ACCEPT_LANGUAGE'], 0, 2);
-
-                // set to default if browser language not supported
-
-                if (!in_array(self::$language, self::$languages)) {
-
-                    self::$language = self::$languages[0];
-                }
-
-                // redirect index
-
-                if (in_array('index', $context['params']['page-types'])) {
-
-                    header('Location: ' . $context['params']['root'] . '/' . self::$language . '/'); exit;
-                }
-            }
-
             // set params
 
             $context['params']['languages'] = self::$languages;
@@ -135,7 +131,7 @@ class Extension_Multilingual extends Extension
         }
     }
 
-    // datasource
+    // datasource filtering
 
     public function dataSourcePreExecute($context)
     {
@@ -190,6 +186,8 @@ class Extension_Multilingual extends Extension
         }
     }
 
+    // datasource filtering fallback
+
     public function dataSourceEntriesBuilt($context)
     {
         // check if language preconditions are met
@@ -232,6 +230,8 @@ class Extension_Multilingual extends Extension
         }
     }
 
+    // datasource output
+
     public function dataSourcePostExecute($context)
     {
         if (self::$languages) {
@@ -258,7 +258,7 @@ class Extension_Multilingual extends Extension
 
                                 // add multilingual elements
 
-                                $entry = self::addElements($entry);
+                                $entry = self::processElements($entry);
 
                                 // replace entry in group
 
@@ -284,7 +284,7 @@ class Extension_Multilingual extends Extension
 
                         // add multilingual elements
 
-                        $entry = self::addElements($entry);
+                        $entry = self::processElements($entry);
 
                         // replace entry in root element
 
@@ -295,9 +295,9 @@ class Extension_Multilingual extends Extension
         }
     }
 
-    // helper
+    // datasource output helper
 
-    private static function addElements(XMLElement $entry)
+    private static function processElements(XMLElement $entry)
     {
         // check if entry has elements
 
