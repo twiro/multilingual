@@ -12,9 +12,9 @@ Multilingual extension for [Symphony CMS][1].
 
 1.  Upload the "multilingual" folder to your Symphony extensions folder.
 
-2.  Enable it by selecting "Multilingual" under System > Extensions, choose Enable from the with-selected menu, then click Apply.
+2.  Enable it by selecting "Multilingual" under System → Extensions, choose Enable from the with-selected menu, then click Apply.
 
-3.  Go to System > Preferences and provide a comma-separated list of [ISO 639-1][2] language codes in the "Multilingual"-section of your preferences screen.
+3.  Go to System → Preferences and provide a comma-separated list of [ISO 639-1][2] language codes in the "Multilingual"-section of your preferences screen.
 
 ![Preferences][4]
 
