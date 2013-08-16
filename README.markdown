@@ -20,7 +20,7 @@ Multilingual extension for [Symphony CMS][1].
 
 The first language in your list is considered the default language.
 
-The `$languages`, `$language` and `$multilingual` parameters will be added to the Page Parameters.
+The `$languages` and `$language` parameters will be added to the Page Parameters.
 
     <params>
         <languages>
@@ -28,16 +28,13 @@ The `$languages`, `$language` and `$multilingual` parameters will be added to th
             <item handle="de">de</item>
         </languages>
         <language>en</language>
-        <multilingual>yes</multilingual>
     </params>
 
 ## Sections: Fields
 
-The very basic approach of this extension doesn't require specific multilingual fields.
+The very special approach of this extension (reduce dependence on too many third party extensions, leave as much to core functionality as possible) doesn't require special multilingual fields.
 
-Instead, you can simply use any available fields you like.
-
-A possible downside (at least for lazy developers) is that you have to add the fields you want to be multilingual for each language manually.
+Just use whatever (non-multilingual) field you like by adding a dedicated field for each language you want to support.
 
 ![Sections: Fields][5]
 
@@ -49,7 +46,7 @@ Fields for additional languages can always be optional, the extension falls back
 
 ## Sections: UI
 
-To provide your clients with a clean and simple user interface for adding and editing section entries, you can use additional UI extensions like [Publish Tabs][3].
+To provide your clients with a clean and simple user interface for adding and editing section entries, you can use additional UI extensions like [Parenthesis Tabs][3].
 
 ![Sections: UI][6]
 
@@ -63,39 +60,24 @@ The extension takes care of filtering your entries in the current language and f
 
 ## Data Sources: Output
 
-While you always have to manually select all languages for a field in the data source editor's "XML Output"-section...
+Make sure to select all languages for a field in the data source editor's "XML Output"-section.
 
 ![Data Sources: Output][8]
 
-...you can access multilingual fields in the current language by using the field handle without a language code:
+The extension removes the language segment from the field name and provides a `lang`-attribute instead.
 
     <entry>
-        <title-en handle="the-extremes-of-good-and-evil">The Extremes of Good and Evil</title-en>
-        <title-de handle="the-extremes-of-good-and-evil">Das höchste Gut und Übel</title-de>
-        <title handle="the-extremes-of-good-and-evil">The Extremes of Good and Evil</title>
+        <title lang="en" handle="the-extremes-of-good-and-evil">The Extremes of Good and Evil</title>
+        <title lang="de" handle="das-hoechste-gut-und-uebel">Das höchste Gut und Übel</title>
     </entry>
 
-## That's it
+In your XSLT, you can now use the `$language`-parameter to get the translation for the current language.
 
-This extension only provides basic functionality for filtering datasources and adds additional elements for the current language in your XML output.
-
-Other parts of your multilingual project can be translated by using additional approaches (with a minimal amount of additional extensions) as suggested below.
-
-## Templates / Static Texts
-
-Stay tuned...
-
-## Page handles
-
-Stay tuned...
-
-## Domain mapping
-
-Stay tuned...
+    <xsl:value-of select="title[@lang = $language]" />
 
 [1]: http://getsymphony.com
 [2]: http://en.wikipedia.org/wiki/ISO_639-1
-[3]: http://symphonyextensions.com/extensions/publish_tabs/
+[3]: http://symphonyextensions.com/extensions/parenthesistabs/
 [4]: https://raw.github.com/jensscherbl/multilingual/master/docs/assets/images/preferences.png
 [5]: https://raw.github.com/jensscherbl/multilingual/master/docs/assets/images/sections_fields.png
 [6]: https://raw.github.com/jensscherbl/multilingual/master/docs/assets/images/sections_ui.png
