@@ -1,9 +1,9 @@
 # Multilingual
 
 - Status: experimental
-- Version: 1.1
-- Release Date: 2013-05-17
-- Requirements: Symphony 2.3.2
+- Version: 1.2
+- Release Date: 2013-08-16
+- Requirements: Symphony 2.3.3
 - Author: Jens Scherbl
 
 Multilingual extension for [Symphony CMS][1].
