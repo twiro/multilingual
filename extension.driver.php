@@ -2,7 +2,7 @@
 
 class Extension_Multilingual extends Extension
 {
-    public static $languages, $language;
+    private static $languages, $language, $resolved;
 
     // delegates
 
@@ -79,42 +79,47 @@ class Extension_Multilingual extends Extension
 
     public function frontendPrePageResolve($context)
     {
-        // get languages from configuration
+        if (!self::$resolved) {
 
-        if (self::$languages = Symphony::Configuration()->get('languages', 'multilingual')) {
+            // get languages from configuration
 
-            self::$languages = explode(',', str_replace(' ', '', self::$languages));
+            if (self::$languages = Symphony::Configuration()->get('languages', 'multilingual')) {
 
-            // detect language from path
+                self::$languages = explode(',', str_replace(' ', '', self::$languages));
 
-            if (preg_match('/^\/([a-z]{2})\//', $context['page'], $match)) {
+                // detect language from path
 
-                // set language from path
+                if (preg_match('/^\/([a-z]{2})\//', $context['page'], $match)) {
 
-                self::$language = $match[1];
+                    // set language from path
 
-            } else {
+                    self::$language = $match[1];
 
-                // detect language from browser
+                } else {
 
-                self::$language = substr($_SERVER['HTTP_ACCEPT_LANGUAGE'], 0, 2);
+                    // detect language from browser
+
+                    self::$language = substr($_SERVER['HTTP_ACCEPT_LANGUAGE'], 0, 2);
+                }
+
+                // check if language is supported
+
+                if (!in_array(self::$language, self::$languages)) {
+
+                    // set to default otherwise
+
+                    self::$language = self::$languages[0];
+                }
+
+                // redirect root page
+
+                if (!$context['page']) {
+
+                    header('Location: ' . URL . '/' . self::$language . '/'); exit;
+                }
             }
 
-            // check if language is supported
-
-            if (!in_array(self::$language, self::$languages)) {
-
-                // set to default otherwise
-
-                self::$language = self::$languages[0];
-            }
-
-            // redirect root page
-
-            if (!$context['page']) {
-
-                header('Location: ' . URL . '/' . self::$language . '/'); exit;
-            }
+            self::$resolved = true;
         }
     }
 
