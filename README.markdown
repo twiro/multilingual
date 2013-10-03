@@ -1,7 +1,7 @@
 # Multilingual
 
 - Status: experimental
-- Version: 1.2
+- Version: 2.0
 - Release Date: 2013-10-03
 - Requirements: Symphony 2.3.3
 - Author: Jens Scherbl

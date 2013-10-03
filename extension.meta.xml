@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<extension id="multilingual" status="experimental" xmlns="http://symphony-cms.com/schemas/extension/1.0">
+<extension id="multilingual" status="released" xmlns="http://symphony-cms.com/schemas/extension/1.0">
 	<name>Multilingual</name>
 	<description lang="en">Provides basic helpers for multilingual projects.</description>
 	<url type="repo">https://github.com/jensscherbl/multilingual</url>
@@ -14,7 +14,7 @@
 		</author>
 	</authors>
 	<releases>
-		<release version="1.2" date="2013-10-03" min="2.3.3" max="2.3.x">
+		<release version="2.0" date="2013-10-03" min="2.3.3" max="2.3.x">
 			- BREAKING CHANGES!
 			- Fixed issue where some field types always showed fallback content (default language) instead of translation
 			- Extension no longer interferes with page routing (language segment is no longer removed from path internally before resolving a page)
