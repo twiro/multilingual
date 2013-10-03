@@ -2,7 +2,7 @@
 <extension id="multilingual" status="experimental" xmlns="http://symphony-cms.com/schemas/extension/1.0">
 	<name>Multilingual</name>
 	<description lang="en">Provides basic helpers for multilingual projects.</description>
-	<url type="repo">https://github.com/jensscherbl/Multilingual</url>
+	<url type="repo">https://github.com/jensscherbl/multilingual</url>
 	<url type="discuss">http://getsymphony.com/discuss/thread/99525/</url>
 	<types>
 		<type>Multilingual</type>
@@ -14,7 +14,8 @@
 		</author>
 	</authors>
 	<releases>
-		<release version="1.2" date="2013-08-16" min="2.3.3" max="2.3.x">
+		<release version="1.2" date="2013-10-03" min="2.3.3" max="2.3.x">
+			- BREAKING CHANGES!
 			- Fixed issue where some field types always showed fallback content (default language) instead of translation
 			- Extension no longer interferes with page routing (language segment is no longer removed from path internally before resolving a page)
 			- Language detection and redirection now happens in the `FrontendPrePageResolve`- instead of the `FrontendParamsResolve`-delegate

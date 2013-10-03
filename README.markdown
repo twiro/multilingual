@@ -2,7 +2,7 @@
 
 - Status: experimental
 - Version: 1.2
-- Release Date: 2013-08-16
+- Release Date: 2013-10-03
 - Requirements: Symphony 2.3.3
 - Author: Jens Scherbl
 
@@ -20,7 +20,7 @@ Multilingual extension for [Symphony CMS][1].
 
 The first language in your list is considered the default language.
 
-The `$languages` and `$language` parameters will be added to the Page Parameters.
+The `$languages` and `$language` parameters will be added to your XML output.
 
     <params>
         <languages>
@@ -32,21 +32,23 @@ The `$languages` and `$language` parameters will be added to the Page Parameters
 
 ## Sections: Fields
 
-The very special approach of this extension (reduce dependence on too many third party extensions, leave as much to core functionality as possible) doesn't require special multilingual fields.
+The very special approach of this extension (reduce reliance on too many third party extensions, leave as much to core functionality as possible) doesn't require special multilingual field types.
 
-Just use whatever (non-multilingual) field you like by adding a dedicated field for each language you want to support.
+Use whatever (non-multilingual) field type you like by adding a dedicated field for each of your supported languages.
 
 ![Sections: Fields][5]
 
-The only requirement for the extension to identify your fields as multilingual is the naming scheme for field handles.
+You just need to make sure that each translation of field shares the same field handle, followed by a dash and the language code as specified in your settings.
 
-Fields for the same content in different languages have to have the same handle, followed by a dash and the language code as specified in your settings.
+In most cases, it's recommended to mark at least all fields for the default language as required.
 
-Fields for additional languages can always be optional, the extension falls back to the default language for a specific field if no translation is provided.
+Translations for a field can always be optional.
+
+If a translation isn't provided for a specific language, the extension falls back to the default language in your XML output.
 
 ## Sections: UI
 
-To provide your clients with a clean and simple user interface for adding and editing section entries, you can use additional UI extensions like [Parenthesis Tabs][3].
+To provide your clients with a clean and simple user interface, you should use an additional UI extensions like [Parenthesis Tabs][3].
 
 ![Sections: UI][6]
 
@@ -77,7 +79,7 @@ In your XSLT, you can now use the `$language`-parameter to get the translation f
 
 [1]: http://getsymphony.com
 [2]: http://en.wikipedia.org/wiki/ISO_639-1
-[3]: http://symphonyextensions.com/extensions/parenthesistabs/
+[3]: https://github.com/hananils/parenthesistabs
 [4]: https://raw.github.com/jensscherbl/multilingual/master/docs/assets/images/preferences.png
 [5]: https://raw.github.com/jensscherbl/multilingual/master/docs/assets/images/sections_fields.png
 [6]: https://raw.github.com/jensscherbl/multilingual/master/docs/assets/images/sections_ui.png
