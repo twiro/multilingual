@@ -34,8 +34,6 @@ In most cases, it's recommended to mark at least all fields for the default lang
 
 Translations for a field can always be optional.
 
-If a translation isn't provided for a specific language, the extension falls back to the default language in your XML output.
-
 ## Sections: UI
 
 To provide your clients with a clean and simple user interface, you should use an additional UI extensions like [Parenthesis Tabs][3].
@@ -56,16 +54,38 @@ Make sure to select all languages for a field in the data source editor's "XML O
 
 ![Data Sources: Output][8]
 
-The extension removes the language segment from the field name and provides a `lang`-attribute instead.
+The extension removes the language segment from the field name and provides `lang`- and `translated`-attributes instead.
 
     <entry>
-        <title lang="en" handle="the-extremes-of-good-and-evil">The Extremes of Good and Evil</title>
-        <title lang="de" handle="das-hoechste-gut-und-uebel">Das höchste Gut und Übel</title>
+        <title lang="en" translated="yes" handle="the-extremes-of-good-and-evil">
+            The Extremes of Good and Evil
+        </title>
+        <title lang="de" translated="yes" handle="das-hoechste-gut-und-uebel">
+            Das höchste Gut und Übel
+        </title>
     </entry>
 
 In your XSLT, you can now use the `$language`-parameter to get the translation for the current language.
 
     <xsl:value-of select="title[@lang = $language]" />
+
+If a translation isn't provided for a specific language, the extension provides a fallback to the default language in your XML output.
+
+    <entry>
+        <title lang="en" translated="yes" handle="the-extremes-of-good-and-evil">
+            The Extremes of Good and Evil
+        </title>
+        <title lang="de" translated="no" handle="the-extremes-of-good-and-evil">
+            The Extremes of Good and Evil
+        </title>
+    </entry>
+
+You can check if a field has actually been translated or uses fallback content by testing the `translated`-attribute.
+
+    <xsl:if test="@translated = 'yes'">
+        <xsl:value-of select="title[@lang = $language]" />
+    </xsl:if>
+
 
 [1]: http://getsymphony.com
 [2]: http://en.wikipedia.org/wiki/ISO_639-1
