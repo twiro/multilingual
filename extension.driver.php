@@ -140,6 +140,10 @@ class Extension_Multilingual extends Extension
 
     public function dataSourcePreExecute($context)
     {
+        // clear preexisting output
+
+        $context['xml'] = null;
+
         // check if language preconditions are met
 
         if (self::$languages && self::$language !== self::$languages[0]) {
@@ -239,7 +243,7 @@ class Extension_Multilingual extends Extension
 
     public function dataSourcePostExecute($context)
     {
-        if (self::$languages) {
+        if (self::$languages && $context['xml'] instanceof XMLElement) {
 
             // fiend entries & process fields
 
