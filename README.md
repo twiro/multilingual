@@ -67,7 +67,7 @@ The extension removes the language segment from the field name and provides `lan
 
 In your XSLT, you can now use the `$language`-parameter to get the translation for the current language.
 
-    <xsl:value-of select="title[@lang = $language]" />
+    <xsl:value-of select="title[@lang = $language]"/>
 
 If a translation isn't provided for a specific language, the extension provides a fallback to the default language in your XML output.
 
@@ -82,8 +82,8 @@ If a translation isn't provided for a specific language, the extension provides 
 
 You can check if a field has actually been translated or uses fallback content by testing the `translated`-attribute.
 
-    <xsl:if test="@translated = 'yes'">
-        <xsl:value-of select="title[@lang = $language]" />
+    <xsl:if test="title[@lang = $language]/@translated = 'yes'">
+        <xsl:value-of select="title[@lang = $language]"/>
     </xsl:if>
 
 
