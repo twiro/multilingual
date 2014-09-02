@@ -1,20 +1,10 @@
 # Multilingual
 
-- Status: experimental
-- Version: 2.0
-- Release Date: 2013-10-03
-- Requirements: Symphony 2.3.3
-- Author: Jens Scherbl
+Multilingual extension for [Symphony][1].
 
-Multilingual extension for [Symphony CMS][1].
+## Configuration
 
-## Installation and Setup
-
-1.  Upload the "multilingual" folder to your Symphony extensions folder.
-
-2.  Enable it by selecting "Multilingual" under System › Extensions, choose Enable from the with-selected menu, then click Apply.
-
-3.  Go to System › Preferences and provide a comma-separated list of [ISO 639-1][2] language codes in the "Multilingual"-section of your preferences screen.
+Go to System › Preferences and provide a comma-separated list of [ISO 639-1][2] language codes in the "Multilingual"-section of your preferences screen.
 
 ![Preferences][4]
 
@@ -77,11 +67,11 @@ In your XSLT, you can now use the `$language`-parameter to get the translation f
 
     <xsl:value-of select="title[@lang = $language]" />
 
-[1]: http://getsymphony.com
-[2]: http://en.wikipedia.org/wiki/ISO_639-1
-[3]: https://github.com/hananils/parenthesistabs
-[4]: https://raw.github.com/jensscherbl/multilingual/master/docs/assets/images/preferences.png
-[5]: https://raw.github.com/jensscherbl/multilingual/master/docs/assets/images/sections_fields.png
-[6]: https://raw.github.com/jensscherbl/multilingual/master/docs/assets/images/sections_ui.png
-[7]: https://raw.github.com/jensscherbl/multilingual/master/docs/assets/images/ds_filters.png
-[8]: https://raw.github.com/jensscherbl/multilingual/master/docs/assets/images/ds_output.png
+[1]: //getsymphony.com
+[2]: //en.wikipedia.org/wiki/ISO_639-1
+[3]: //github.com/hananils/parenthesistabs
+[4]: //raw.githubusercontent.com/jensscherbl/multilingual/gh-pages/assets/images/preferences.png
+[5]: //raw.githubusercontent.com/jensscherbl/multilingual/gh-pages/assets/images/sections_fields.png
+[6]: //raw.githubusercontent.com/jensscherbl/multilingual/gh-pages/assets/images/sections_ui.png
+[7]: //raw.githubusercontent.com/jensscherbl/multilingual/gh-pages/assets/images/ds_filters.png
+[8]: //raw.githubusercontent.com/jensscherbl/multilingual/gh-pages/assets/images/ds_output.png

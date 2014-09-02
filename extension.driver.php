@@ -43,7 +43,7 @@ class Extension_Multilingual extends Extension
         // remove languages from configuration
 
         Symphony::Configuration()->remove('multilingual');
-        Administration::instance()->saveConfig();
+        Symphony::Configuration()->write();
     }
 
     // preferences
@@ -263,24 +263,29 @@ class Extension_Multilingual extends Extension
 
             foreach ($elements as $element_index => $element) {
 
-                // check if element is entry
+                // check if element is xml element
 
-                if ($element->getName() === 'entry') {
+                if ($element instanceof XMLElement) {
 
-                    // process fields
+                    // check if element is entry
 
-                    $element = $this->processFields($element);
+                    if ($element->getName() === 'entry') {
 
-                } else {
+                        // process fields
 
-                    // find entries
+                        $element = $this->processFields($element);
 
-                    $element = $this->findEntries($element);
+                    } else {
+
+                        // find entries
+
+                        $element = $this->findEntries($element);
+                    }
+
+                    // replace element
+
+                    $xml->replaceChildAt($element_index, $element);
                 }
-
-                // replace element
-
-                $xml->replaceChildAt($element_index, $element);
             }
         }
 

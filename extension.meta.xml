@@ -1,36 +1,39 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<extension id="multilingual" status="released" xmlns="http://symphony-cms.com/schemas/extension/1.0">
-	<name>Multilingual</name>
-	<description lang="en">Provides basic helpers for multilingual projects.</description>
-	<url type="repo">https://github.com/jensscherbl/multilingual</url>
-	<url type="discuss">http://getsymphony.com/discuss/thread/99525/</url>
-	<types>
-		<type>Multilingual</type>
-	</types>
-	<authors>
-		<author>
-			<name github="jensscherbl" symphony="jensscherbl" twitter="jensscherbl">Jens Scherbl</name>
-			<website>http://webninjas.net</website>
-		</author>
-	</authors>
-	<releases>
-		<release version="2.0" date="2013-10-03" min="2.3.3" max="2.3.x">
-			- BREAKING CHANGES!
-			- Fixed issue where some field types always showed fallback content (default language) instead of translation
-			- Extension no longer interferes with page routing (language segment is no longer removed from path internally before resolving a page)
-			- Language detection and redirection now happens in the `FrontendPrePageResolve`- instead of the `FrontendParamsResolve`-delegate
-			- Changed XML output for multilingual fields (removed language segment from field names, added `lang`-attribute instead)
-			- Removed `$multilingual`-parameter from XML output
-			- Minor refinements
-		</release>
-		<release version="1.1" date="2013-05-17" min="2.3.2" max="2.3.x">
-			- Fixed a critical issue where output parameters weren't passed correctly to chained datasources
-			- Removed `$root-ml`-parameter
-			- Introduced `$multilingual`-parameter
-			- Minor refinements
-		</release>
-		<release version="1.0" date="2013-04-09" min="2.3.2" max="2.3.x">
-			- Initial release
-		</release>
-	</releases>
+<extension id="multilingual" status="released" xmlns="http://getsymphony.com/schemas/extension/1.0">
+    <name>Multilingual</name>
+    <description>Provides basic helpers for multilingual projects.</description>
+    <repo type="github">https://github.com/jensscherbl/multilingual</repo>
+    <types>
+        <type>Multilingual</type>
+    </types>
+    <authors>
+        <author>
+            <name github="jensscherbl" symphony="jensscherbl">Jens Scherbl</name>
+        </author>
+    </authors>
+    <releases>
+        <release version="1.1.0" date="2014-09-02" min="2.3.3" max="2.x.x">
+            - Added changes for compatibility with Symphony 2.x.x
+            - Added attribute `translated` to indicate when fields fall back to default language
+            - Fixed issue where conflict with other extensions produced fatal error and nasty side effects
+            - Fixed issue with datasources that are grouped by date field
+        </release>
+        <release version="1.0.0" date="2013-10-03" min="2.3.3" max="2.3.x">
+            - Fixed issue where some field types always showed fallback content (default language) instead of translation
+            - Extension no longer interferes with page routing (language segment is no longer removed from path internally before resolving a page)
+            - Language detection and redirection now happens in the `FrontendPrePageResolve`- instead of the `FrontendParamsResolve`-delegate
+            - Changed XML output for multilingual fields (removed language segment from field names, added `lang`-attribute instead)
+            - Removed `$multilingual`-parameter from XML output
+            - Minor refinements
+        </release>
+        <release version="0.2.0" date="2013-05-17" min="2.3.3" max="2.3.x">
+            - Fixed a critical issue where output parameters weren't passed correctly to chained datasources
+            - Removed `$root-ml`-parameter
+            - Introduced `$multilingual`-parameter
+            - Minor refinements
+        </release>
+        <release version="0.1.0" date="2013-04-09" min="2.3.3" max="2.3.x">
+            - Experimental release
+        </release>
+    </releases>
 </extension>
