@@ -316,6 +316,7 @@ class Extension_Multilingual extends Extension
 
                         $element->setName($element_handle);
                         $element->setAttribute('lang', $match[1]);
+                        $element->setAttribute('translated', 'yes');
 
                         // store element
 
@@ -351,6 +352,7 @@ class Extension_Multilingual extends Extension
                                 $element[$language] = clone $element[self::$languages[0]];
 
                                 $element[$language]->setAttribute('lang', $language);
+                                $element[$language]->setAttribute('translated', 'no');
                             }
                         }
                     }
