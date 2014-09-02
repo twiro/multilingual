@@ -67,11 +67,11 @@ In your XSLT, you can now use the `$language`-parameter to get the translation f
 
     <xsl:value-of select="title[@lang = $language]" />
 
-[1]: //getsymphony.com
-[2]: //en.wikipedia.org/wiki/ISO_639-1
-[3]: //github.com/hananils/parenthesistabs
-[4]: //raw.githubusercontent.com/jensscherbl/multilingual/gh-pages/assets/images/preferences.png
-[5]: //raw.githubusercontent.com/jensscherbl/multilingual/gh-pages/assets/images/sections_fields.png
-[6]: //raw.githubusercontent.com/jensscherbl/multilingual/gh-pages/assets/images/sections_ui.png
-[7]: //raw.githubusercontent.com/jensscherbl/multilingual/gh-pages/assets/images/ds_filters.png
-[8]: //raw.githubusercontent.com/jensscherbl/multilingual/gh-pages/assets/images/ds_output.png
+[1]: http://getsymphony.com
+[2]: http://en.wikipedia.org/wiki/ISO_639-1
+[3]: https://github.com/hananils/parenthesistabs
+[4]: https://raw.githubusercontent.com/jensscherbl/multilingual/gh-pages/assets/images/preferences.png
+[5]: https://raw.githubusercontent.com/jensscherbl/multilingual/gh-pages/assets/images/sections_fields.png
+[6]: https://raw.githubusercontent.com/jensscherbl/multilingual/gh-pages/assets/images/sections_ui.png
+[7]: https://raw.githubusercontent.com/jensscherbl/multilingual/gh-pages/assets/images/ds_filters.png
+[8]: https://raw.githubusercontent.com/jensscherbl/multilingual/gh-pages/assets/images/ds_output.png
