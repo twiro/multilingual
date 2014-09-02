@@ -241,72 +241,55 @@ class Extension_Multilingual extends Extension
     {
         if (self::$languages) {
 
-            // check if entries are grouped
+            // fiend entries & process fields
 
-            if ($context['datasource']->dsParamGROUP) {
-
-                // check if datasource has groups
-
-                if (($groups = $context['xml']->getChildren()) && is_array($groups)) {
-
-                    // handle groups
-
-                    foreach ($groups as $group_index => $group) {
-
-                        // check if group has entries
-
-                        if (($entries = $group->getChildrenByName('entry')) && is_array($entries)) {
-
-                            // handle entries
-
-                            foreach ($entries as $entry_index => $entry) {
-
-                                // add multilingual elements
-
-                                $entry = self::processElements($entry);
-
-                                // replace entry in group
-
-                                $group->replaceChildAt($entry_index, $entry);
-                            }
-
-                            // replace group in root element
-
-                            $context['xml']->replaceChildAt($group_index, $group);
-                        }
-                    }
-                }
-
-            } else {
-
-                // check if datasource has entries
-
-                if (($entries = $context['xml']->getChildrenByName('entry')) && is_array($entries)) {
-
-                    // handle entries
-
-                    foreach ($entries as $entry_index => $entry) {
-
-                        // add multilingual elements
-
-                        $entry = self::processElements($entry);
-
-                        // replace entry in root element
-
-                        $context['xml']->replaceChildAt($entry_index, $entry);
-                    }
-                }
-            }
+            $context['xml'] = $this->findEntries($context['xml']);
         }
     }
 
-    // datasource output helper
+    // datasource output entries
 
-    private static function processElements(XMLElement $entry)
+    private function findEntries(XMLElement $xml)
     {
-        // check if entry has elements
+        // check if xml has child elements
 
-        if (($elements = $entry->getChildren()) && is_array($elements)) {
+        if (($elements = $xml->getChildren()) && is_array($elements)) {
+
+            // handle elements
+
+            foreach ($elements as $element_index => $element) {
+
+                // check if element is entry
+
+                if ($element->getName() === 'entry') {
+
+                    // process fields
+
+                    $element = $this->processFields($element);
+
+                } else {
+
+                    // find entries
+
+                    $element = $this->findEntries($element);
+                }
+
+                // replace element
+
+                $xml->replaceChildAt($element_index, $element);
+            }
+        }
+
+        return $xml;
+    }
+
+    // datasource output fields
+
+    private function processFields(XMLElement $xml)
+    {
+        // check if xml has child elements
+
+        if (($elements = $xml->getChildren()) && is_array($elements)) {
 
             // handle elements
 
@@ -340,14 +323,20 @@ class Extension_Multilingual extends Extension
 
                         // remove element
 
-                        $entry->removeChildAt($element_index);
+                        $xml->removeChildAt($element_index);
                     }
                 }
             }
 
+            // check for stored multilingual elements
+
             if (is_array($multilingual_elements)) {
 
+                // handle multilingual elements
+
                 foreach ($multilingual_elements as $element_handle => $element) {
+
+                    // handle languages
 
                     foreach (self::$languages as $language) {
 
@@ -368,11 +357,11 @@ class Extension_Multilingual extends Extension
 
                     // readd elements
 
-                    $entry->appendChildArray($element);
+                    $xml->appendChildArray($element);
                 }
             }
         }
 
-        return $entry;
+        return $xml;
     }
 }
