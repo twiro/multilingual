@@ -305,42 +305,43 @@ class Extension_Multilingual extends Extension
             foreach ($elements as $element_index => $element) {
 
                 // get element handle
+                if (is_object($element)) {
+                    $element_handle = $element->getName();
 
-                $element_handle = $element->getName();
+                    // check if element handle is multilingual
 
-                // check if element handle is multilingual
+                    if (preg_match('/-([a-z]{2})$/', $element_handle, $match)) {
 
-                if (preg_match('/-([a-z]{2})$/', $element_handle, $match)) {
+                        // check if language is supported
 
-                    // check if language is supported
+                        if (in_array($match[1], self::$languages)) {
 
-                    if (in_array($match[1], self::$languages)) {
+                           // remove language segment from element handle
 
-							  // remove language segment from element handle
+                           $element_handle = preg_replace('/-' . $match[1] . '$/', '', $element_handle);
+                           $element_mode = $element->getAttribute('mode');
 
-							  $element_handle = preg_replace('/-' . $match[1] . '$/', '', $element_handle);
-							  $element_mode = $element->getAttribute('mode');
+                           // set new name and language
 
-							  // set new name and language
+                           $element->setName($element_handle);
+                           $element->setAttribute('lang', $match[1]);
+                           $element->setAttribute('translated', 'yes');
 
-							  $element->setName($element_handle);
-							  $element->setAttribute('lang', $match[1]);
-							  $element->setAttribute('translated', 'yes');
+                           // store element
 
-							  // store element
+                           $multilingual_elements[$element_handle . ($element_mode ? ':' . $element_mode : '')][$match[1]] = $element;
 
-							  $multilingual_elements[$element_handle . ($element_mode ? ':' . $element_mode : '')][$match[1]] = $element;
+                           // remove element
 
-							  // remove element
-
-							  $xml->removeChildAt($element_index);
-		          }
-					 } else {
-						 $test = $element->getChildrenByName('item');
-						 if (!empty($element->getChildrenByName('item'))) {
-							 $this->findEntries($element, 'item');
-						 }
-					 }
+                           $xml->removeChildAt($element_index);
+                    }
+                    } else {
+                       $test = $element->getChildrenByName('item');
+                       if (!empty($element->getChildrenByName('item'))) {
+                          $this->findEntries($element, 'item');
+                       }
+                    }
+                }
 				}
 
             // check for stored multilingual elements
