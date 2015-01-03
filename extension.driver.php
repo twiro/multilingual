@@ -253,7 +253,7 @@ class Extension_Multilingual extends Extension
 
     // datasource output entries
 
-    private function findEntries(XMLElement $xml)
+    private function findEntries(XMLElement $xml, $entries_name = 'entry')
     {
         // check if xml has child elements
 
@@ -269,7 +269,7 @@ class Extension_Multilingual extends Extension
 
                     // check if element is entry
 
-                    if ($element->getName() === 'entry') {
+                    if ($element->getName() === $entries_name) {
 
                         // process fields
 
@@ -316,27 +316,32 @@ class Extension_Multilingual extends Extension
 
                     if (in_array($match[1], self::$languages)) {
 
-                        // remove language segment from element handle
+							  // remove language segment from element handle
 
-                        $element_handle = preg_replace('/-' . $match[1] . '$/', '', $element_handle);
-                        $element_mode   = $element->getAttribute('mode');
+							  $element_handle = preg_replace('/-' . $match[1] . '$/', '', $element_handle);
+							  $element_mode = $element->getAttribute('mode');
 
-                        // set new name and language
+							  // set new name and language
 
-                        $element->setName($element_handle);
-                        $element->setAttribute('lang', $match[1]);
-                        $element->setAttribute('translated', 'yes');
+							  $element->setName($element_handle);
+							  $element->setAttribute('lang', $match[1]);
+							  $element->setAttribute('translated', 'yes');
 
-                        // store element
+							  // store element
 
-                        $multilingual_elements[$element_handle . ($element_mode ? ':' . $element_mode : '')][$match[1]] = $element;
+							  $multilingual_elements[$element_handle . ($element_mode ? ':' . $element_mode : '')][$match[1]] = $element;
 
-                        // remove element
+							  // remove element
 
-                        $xml->removeChildAt($element_index);
-                    }
-                }
-            }
+							  $xml->removeChildAt($element_index);
+		          }
+					 } else {
+						 $test = $element->getChildrenByName('item');
+						 if (!empty($element->getChildrenByName('item'))) {
+							 $this->findEntries($element, 'item');
+						 }
+					 }
+				}
 
             // check for stored multilingual elements
 
