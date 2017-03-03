@@ -253,7 +253,7 @@ class Extension_Multilingual extends Extension
 
     // datasource output entries
 
-    private function findEntries(XMLElement $xml, $entries_name = 'entry')
+    private function findEntries(XMLElement $xml, $node_name = 'entry')
     {
         // check if xml has child elements
 
@@ -269,7 +269,7 @@ class Extension_Multilingual extends Extension
 
                     // check if element is entry
 
-                    if ($element->getName() === $entries_name) {
+                    if ($element->getName() === $node_name) {
 
                         // process fields
 
@@ -305,7 +305,7 @@ class Extension_Multilingual extends Extension
             foreach ($elements as $element_index => $element) {
 
                 // get element handle
-                if (is_object($element)) {
+                if ($element instanceof XMLElement) {
                     $element_handle = $element->getName();
 
                     // check if element handle is multilingual
@@ -334,15 +334,14 @@ class Extension_Multilingual extends Extension
                            // remove element
 
                            $xml->removeChildAt($element_index);
-                    }
+                        }
                     } else {
-                       $test = $element->getChildrenByName('item');
-                       if (!empty($element->getChildrenByName('item'))) {
-                          $this->findEntries($element, 'item');
-                       }
+                        if (!empty($element->getChildrenByName('item'))) {
+                           $this->findEntries($element, 'item');
+                        }
                     }
                 }
-				}
+            }
 
             // check for stored multilingual elements
 
