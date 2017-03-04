@@ -267,7 +267,7 @@ class Extension_Multilingual extends Extension
 
                 if ($element instanceof XMLElement) {
 
-                    // check if element is entry
+                    // check if element node name is "entry" / "item"
 
                     if ($element->getName() === $node_name) {
 
@@ -335,8 +335,13 @@ class Extension_Multilingual extends Extension
 
                            $xml->removeChildAt($element_index);
                         }
+
+                    // process child "item" nodes (that might contain multilingual content injected by "association ouput")
+
                     } else {
+
                         if (!empty($element->getChildrenByName('item'))) {
+
                            $this->findEntries($element, 'item');
                         }
                     }
