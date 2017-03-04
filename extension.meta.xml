@@ -2,16 +2,25 @@
 <extension id="multilingual" status="released" xmlns="http://getsymphony.com/schemas/extension/1.0">
     <name>Multilingual</name>
     <description>Provides basic helpers for multilingual projects.</description>
-    <repo type="github">https://github.com/jensscherbl/multilingual</repo>
+    <repo type="github">https://github.com/twiro/multilingual</repo>
     <types>
         <type>Multilingual</type>
+        <type>Workflow</type>
     </types>
     <authors>
         <author>
             <name github="jensscherbl" symphony="jensscherbl">Jens Scherbl</name>
+            <website>https://github.com/jensscherbl</website>
+        </author>
+        <author>
+            <name github="twiro" symphony="roman">Roman Klein</name>
+            <website>https://github.com/twiro</website>
         </author>
     </authors>
     <releases>
+        <release version="1.2.0" date="2017-03-04" min="2.3.3" max="2.x.x">
+            - Added support for "Association Output"
+        </release>
         <release version="1.1.0" date="2014-09-15" min="2.3.3" max="2.x.x">
             - Added changes for compatibility with Symphony 2.x.x
             - Added attribute `translated` to indicate when fields fall back to default language
