@@ -2,6 +2,8 @@
 
 Multilingual extension for [Symphony][1].
 
+**NOTE:** this branch represents the current work on the upcoming `2.0.0`-release and **is not considered stable**.
+
 ## Configuration
 
 Go to System › Preferences and provide a comma-separated list of [ISO 639-1][2] language codes in the "Multilingual"-section of your preferences screen.
