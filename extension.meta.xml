@@ -1,48 +1,57 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <extension id="multilingual" status="released" xmlns="http://getsymphony.com/schemas/extension/1.0">
-    <name>Multilingual</name>
-    <description>Provides basic helpers for multilingual projects.</description>
-    <repo type="github">https://github.com/twiro/multilingual</repo>
-    <types>
-        <type>Multilingual</type>
-        <type>Workflow</type>
-    </types>
-    <authors>
-        <author>
-            <name github="jensscherbl" symphony="jensscherbl">Jens Scherbl</name>
-            <website>https://github.com/jensscherbl</website>
-        </author>
-        <author>
-            <name github="twiro" symphony="roman">Roman Klein</name>
-            <website>https://github.com/twiro</website>
-        </author>
-    </authors>
-    <releases>
-        <release version="1.2.0" date="2017-03-04" min="2.3.3" max="2.x.x">
-            - Added support for "Association Output"
-        </release>
-        <release version="1.1.0" date="2014-09-15" min="2.3.3" max="2.x.x">
-            - Added changes for compatibility with Symphony 2.x.x
-            - Added attribute `translated` to indicate when fields fall back to default language
-            - Fixed issue where conflict with other extensions produced fatal error and nasty side effects
-            - Fixed issue with datasources that are grouped by date field
-        </release>
-        <release version="1.0.0" date="2013-10-03" min="2.3.3" max="2.3.x">
-            - Fixed issue where some field types always showed fallback content (default language) instead of translation
-            - Extension no longer interferes with page routing (language segment is no longer removed from path internally before resolving a page)
-            - Language detection and redirection now happens in the `FrontendPrePageResolve`- instead of the `FrontendParamsResolve`-delegate
-            - Changed XML output for multilingual fields (removed language segment from field names, added `lang`-attribute instead)
-            - Removed `$multilingual`-parameter from XML output
-            - Minor refinements
-        </release>
-        <release version="0.2.0" date="2013-05-17" min="2.3.3" max="2.3.x">
-            - Fixed a critical issue where output parameters weren't passed correctly to chained datasources
-            - Removed `$root-ml`-parameter
-            - Introduced `$multilingual`-parameter
-            - Minor refinements
-        </release>
-        <release version="0.1.0" date="2013-04-09" min="2.3.3" max="2.3.x">
-            - Experimental release
-        </release>
-    </releases>
+	<name>Multilingual</name>
+	<description>Provides basic helpers for multilingual projects.</description>
+	<repo type="github">https://github.com/twiro/multilingual</repo>
+	<url type="issues">https://github.com/twiro/multilingual/issues</url>
+	<url type="discuss">http://getsymphony.com/discuss/thread/99525/</url>
+	<types>
+		<type>Multilingual</type>
+		<type>Workflow</type>
+	</types>
+	<authors>
+		<author>
+			<name github="twiro" symphony="roman">Roman Klein</name>
+			<website>https://github.com/twiro</website>
+		</author>
+		<author>
+			<name github="jensscherbl" symphony="jensscherbl">Jens Scherbl</name>
+			<website>https://github.com/jensscherbl</website>
+		</author>
+	</authors>
+	<releases>
+	<release version="2.0.0-beta" date="2017-03-07" min="2.3.3" max="2.x.x">
+		- Improved frontend language detection ([#12](https://github.com/twiro/multilingual/issues/12))
+		- Added support for most common multilingual url-structures ([#12](https://github.com/twiro/multilingual/issues/12))
+		- Added support for (sub)domain-language-mapping ([#12](https://github.com/twiro/multilingual/issues/12))
+		- Added basic support for (optional) region-codes ([#13](https://github.com/twiro/multilingual/issues/13))
+		- Made redirecting optional and added configuration-settings for different scenarios ([#10](https://github.com/twiro/multilingual/issues/10))
+	</release>
+	<release version="1.2.0" date="2017-03-04" min="2.3.3" max="2.x.x">
+		- Added support for "Association Output"
+	</release>
+	<release version="1.1.0" date="2014-09-15" min="2.3.3" max="2.x.x">
+		- Added changes for compatibility with Symphony 2.x.x
+		- Added attribute `translated` to indicate when fields fall back to default language
+		- Fixed issue where conflict with other extensions produced fatal error and nasty side effects
+		- Fixed issue with datasources that are grouped by date field
+	</release>
+	<release version="1.0.0" date="2013-10-03" min="2.3.3" max="2.3.x">
+		- Fixed issue where some field types always showed fallback content (default language) instead of translation
+		- Extension no longer interferes with page routing (language segment is no longer removed from path internally before resolving a page)
+		- Language detection and redirection now happens in the `FrontendPrePageResolve`- instead of the `FrontendParamsResolve`-delegate
+		- Changed XML output for multilingual fields (removed language segment from field names, added `lang`-attribute instead)
+		- Removed `$multilingual`-parameter from XML output
+		- Minor refinements
+	</release>
+	<release version="0.2.0" date="2013-05-17" min="2.3.3" max="2.3.x">
+		- Fixed a critical issue where output parameters weren't passed correctly to chained datasources
+		- Removed `$root-ml`-parameter
+		- Introduced `$multilingual`-parameter
+		- Minor refinements
+	</release>
+	<release version="0.1.0" date="2013-04-09" min="2.3.3" max="2.3.x">
+		- Experimental release
+	</release>
+	</releases>
 </extension>
