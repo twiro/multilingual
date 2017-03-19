@@ -26,6 +26,8 @@
 		- Added support for (sub)domain-language-mapping ([#12](https://github.com/twiro/multilingual/issues/12))
 		- Added basic support for (optional) region-codes ([#13](https://github.com/twiro/multilingual/issues/13))
 		- Made redirecting optional and added configuration-settings for different scenarios ([#10](https://github.com/twiro/multilingual/issues/10))
+		- Added datasource `multilingual` (containing information about all provided languages)
+		- Removed the $languages-parameter (listing all provided languages) from the parameter pool
 	</release>
 	<release version="1.2.0" date="2017-03-04" min="2.3.3" max="2.x.x">
 		- Added support for "Association Output"

@@ -299,7 +299,6 @@ class Extension_Multilingual extends Extension
         if (multilingual::$languages) {
             $context['params']['language'] = multilingual::$language;
             $context['params']['region'] = multilingual::$region;
-            $context['params']['languages'] = multilingual::$languages;
             $context['params']['language-source'] = multilingual::$language_source;
 
             // additional params for testing (!!! TODO : REMOVE BEFORE FINAL RELEASE !!!)
