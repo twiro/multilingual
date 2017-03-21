@@ -511,7 +511,7 @@ class Extension_Multilingual extends Extension
 
                         // check if language is supported
 
-                        if (in_array($match[1], self::$languages)) {
+                        if (in_array($match[1], multilingual::$languages)) {
 
                            // remove language segment from element handle
 
