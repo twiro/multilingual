@@ -58,6 +58,10 @@ class Extension_Multilingual extends Extension
 
         Symphony::Configuration()->remove('multilingual');
         Symphony::Configuration()->write();
+
+        // remove multilingual htaccess rewrite rules
+
+        multilingual::updateHtaccessRewriteRules('remove');
     }
 
     /**
@@ -68,7 +72,7 @@ class Extension_Multilingual extends Extension
 
     public function addCustomPreferenceFieldsets($context)
     {
-        // create fieldset
+        // create fieldset #1 "multilingual"
 
         $fieldset = new XMLElement('fieldset');
         $fieldset->setAttribute('class', 'settings');
@@ -76,10 +80,10 @@ class Extension_Multilingual extends Extension
 
         // create group & column
 
-        $group = new XMLElement('div', null, array('class' => 'two columns'));
+        $group = new XMLElement('div', null, array('class' => 'column'));
         $column = new XMLElement('div', null, array('class' => 'column'));
 
-        // 1) Setting "languages"
+        // #1.1) Setting "languages"
 
         // get "languages" settings from configuration
 
@@ -109,13 +113,62 @@ class Extension_Multilingual extends Extension
         // append to column & group
 
         $column->appendChildArray($form_languages);
+
+        // append column to fieldset & context
+
         $group->appendChild($column);
+        $fieldset->appendChild($group);
+        $context['wrapper']->appendChild($fieldset);
 
-        // create new column
+        // create fieldset #2 "multilingual routing"
 
+        $fieldset = new XMLElement('fieldset');
+        $fieldset->setAttribute('class', 'settings');
+        $fieldset->appendChild(new XMLElement('legend', __('Multilingual Routing')));
+
+        // create new group & column
+
+        $group = new XMLElement('div', null, array('class' => 'two columns'));
         $column = new XMLElement('div', null, array('class' => 'column'));
 
-        // 2) setting "Domain Language Configuration"
+        // #2.1) Setting "htaccess"
+
+        // get "htaccess" settings from configuration
+
+        $htaccess = Symphony::Configuration()->get('htaccess', 'multilingual');
+        if (!$htaccess) $htaccess =  'no';
+
+        // add checkbox for htaccess configuration
+
+        $form_htaccess['input'] = Widget::Checkbox(
+            'settings[multilingual][htaccess]',
+            $htaccess,
+            __('Enable htaccess rewrite rules')
+        );
+
+        // set checkbox value
+
+        if ($htaccess === 'yes') $form_htaccess['input']->setAttribute('checked', 'checked');
+
+        // add help text
+
+        $form_htaccess['help'] = new XMLElement('p', __('Enabling htaccess rewrite rules will allow for using all defined languages with the default multilingual url-structure ("<code>en/page/</code>") out of the box (without relying on any further page- or routing-manipulation).<br/>Refer to the documentation for further details about routing possibilities.'));
+        $form_htaccess['help']->setAttribute('class', 'help');
+
+        // append to column (including optional error message)
+
+        if (isset($context['errors']['multilingual']['htaccess'])) {
+            $column->appendChild(Widget::Error($form_htaccess['input'], $context['errors']['multilingual']['htaccess']));
+        } else {
+            $column->appendChildArray($form_htaccess);
+        }
+
+        // append column to group & create new column
+
+        $group->appendChild($column);
+        $column = new XMLElement('div', null, array('class' => 'column'));
+
+        // #2.2) setting "Domain Language Configuration"
 
         // get "domains" settings from configuration
 
@@ -146,14 +199,14 @@ class Extension_Multilingual extends Extension
         // append to column & group
 
         $column->appendChildArray($form_domains);
+
+        // append column to group & fieldset
+
         $group->appendChild($column);
-
-        // append column to fieldset & context
-
         $fieldset->appendChild($group);
         $context['wrapper']->appendChild($fieldset);
 
-        // create new fieldset
+        // create fieldset #3 "multilingual redirect"
 
         $fieldset = new XMLElement('fieldset');
         $fieldset->setAttribute('class', 'settings');
@@ -164,7 +217,7 @@ class Extension_Multilingual extends Extension
         $group = new XMLElement('div', null, array('class' => 'two columns'));
         $column = new XMLElement('div', null, array('class' => 'column'));
 
-        // 3) Setting "Redirect"
+        // #3.1) Setting "Redirect"
 
         // get "redirect" settings from configuration
 
@@ -209,7 +262,7 @@ class Extension_Multilingual extends Extension
         $group->appendChild($column);
         $column = new XMLElement('div', null, array('class' => 'column'));
 
-        // 4) Setting "Redirect Method"
+        // #3.2) Setting "Redirect Method"
 
         // get "redirect_method" from configuration
 
@@ -255,12 +308,29 @@ class Extension_Multilingual extends Extension
 
     /**
      * Perform input validation prior to writing the preferences to the config.
+     * Create/edit/remove multilingual rewrite rules in the htaccess-file.
      *
      * @since version 2.0.0
      */
 
     public function save($context)
     {
+        // explode language string and reduce each single language-code to 2 characters (no regions allowed here)
+
+        $langs = explode(',', str_replace(' ', '', $context[settings][multilingual][languages]));
+
+        foreach ($langs as $lang) {
+            $langs_shortened[] = substr($lang, 0, 2);
+        }
+
+        // remove any duplicates
+
+        $langs_unique = array_unique($langs_shortened);
+
+        // save language configuration as comma-separated string
+
+        $context[settings][multilingual][languages] = implode (", ", $langs_unique);
+
         // transform domain-configuration (each line representing one domain) into array
 
         $domains = str_replace(' ', '', $context[settings][multilingual][domains]);
@@ -269,6 +339,30 @@ class Extension_Multilingual extends Extension
         // save domain configuration as comma-separated string
 
         $context[settings][multilingual][domains] = implode (", ", $domains);
+
+        // set htaccess rewrite rules
+
+        if ($context[settings][multilingual][htaccess] === 'yes') {
+
+            // create (blank) set of rules and insert the current set of languages
+
+            $htaccess_create = multilingual::setHtaccessRewriteRules('create');
+            $htaccess_edit = multilingual::setHtaccessRewriteRules('edit', $context[settings][multilingual][languages]);
+
+        } else {
+
+            // remove all multlingual rules
+
+            $htaccess_remove = multilingual::setHtaccessRewriteRules('remove');
+
+        }
+
+        // check if writing the htaccess-file was successful - if not throw an error
+
+        if ($htaccess_create === false || $htaccess_edit === false || $htaccess_remove === false) {
+            $context['errors']['multilingual'][htaccess] = __('There were errors writing the <code>.htaccess</code> file. Please verify it is writable.');
+        }
+
     }
 
     /**
