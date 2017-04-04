@@ -629,10 +629,18 @@ class Extension_Multilingual extends Extension
 
                     // process child "item" nodes (that might contain multilingual content injected by "association ouput")
 
-                    } else if (!empty($element->getChildrenByName('item'))) {
+                    } else {
 
-                        $this->findEntries($element, 'item');
+                        // check the current element for child "item" nodes
 
+                        $items = $element->getChildrenByName('item');
+
+                        // process child "item" nodes
+
+                        if (!empty($items)) {
+
+                           $this->findEntries($element, 'item');
+                        }
                     }
                 }
             }
