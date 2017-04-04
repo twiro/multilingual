@@ -340,7 +340,13 @@ class Extension_Multilingual extends Extension
 
                     } else {
 
-                        if (!empty($element->getChildrenByName('item'))) {
+                        // check the current element for child "item" nodes
+
+                        $items = $element->getChildrenByName('item');
+
+                        // process child "item" nodes
+
+                        if (!empty($items)) {
 
                            $this->findEntries($element, 'item');
                         }

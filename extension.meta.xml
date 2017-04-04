@@ -18,6 +18,9 @@
         </author>
     </authors>
     <releases>
+        <release version="1.2.1" date="2017-04-04" min="2.3.3" max="2.x.x">
+            - Fix support for PHP 5.3 ([#16](https://github.com/twiro/multilingual/issues/16))
+        </release>
         <release version="1.2.0" date="2017-03-04" min="2.3.3" max="2.x.x">
             - Added support for "Association Output"
         </release>
