@@ -20,7 +20,7 @@
 		</author>
 	</authors>
 	<releases>
-	<release version="2.0.0-beta" date="2017-03-27" min="2.3.3" max="2.x.x">
+	<release version="2.0.0-beta" date="2017-04-11" min="2.3.3" max="2.x.x">
 		- Improved frontend language detection ([#12](https://github.com/twiro/multilingual/issues/12))
 		- Added support for most common multilingual url-structures ([#12](https://github.com/twiro/multilingual/issues/12))
 		- Added support for (sub)domain-language-mapping ([#12](https://github.com/twiro/multilingual/issues/12))

@@ -65,6 +65,34 @@ class Extension_Multilingual extends Extension
     }
 
     /**
+     * update the extension
+     *
+     * @since version 2.0.0
+     */
+
+    public function update($previousVersion = false)
+    {
+        // Add new default configuration settings when updating from version 1.X
+
+        if (version_compare($previousVersion, '2.0', '<')) {
+
+            Symphony::Configuration()->setArray(
+                array(
+                    'multilingual' => array(
+                        'htaccess' => 'no',
+                        'domains' => '',
+            			'redirect' => '0',
+            			'redirect_method' => '0'
+                    )
+                ), false
+            );
+            Symphony::Configuration()->write();
+        }
+
+        return true;
+    }
+
+    /**
      * Add configuration settings to symphony's preferences page
      *
      * @since version 1.0.0
