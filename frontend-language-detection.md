@@ -2,12 +2,12 @@
 
 **Multilingual** comes with a flexible "Language Detection Stack" that supports different **[URL Structures](#)** and uses the following methods for frontend language detection:
 
-1. **URL query string**
-2. **URL Path**
-3. **URL (Sub)Domain**
-4. **Cookie**
-5. **Browser Language**
-6. **Fallback Language**
+1. **[URL query string](#1-url-query-string)**
+2. **[URL Path](#2-url-path)**
+3. **[URL (Sub)Domain](#3-url-sub-domain)**
+4. **[Cookie](#4-cookie)**
+5. **[Browser Language](#5-browser-language)**
+6. **[Fallback Language](#6-fallback-language)**
 
 With each page request **Multilingual** will execute these methods in chronological order until a **valid language-code** is detected. A language-code is considered "**valid**" if it complies with the formal requirements (two letter-code) and matches one of the frontend languages that have been defined in the **[configuration](#)**.
 
