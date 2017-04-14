@@ -4,7 +4,7 @@
 
 1. **[URL query string](#1-url-query-string)**
 2. **[URL Path](#2-url-path)**
-3. **[URL (Sub)Domain](#3-url-sub-domain)**
+3. **[URL (Sub)Domain](#3-url-subdomain)**
 4. **[Cookie](#4-cookie)**
 5. **[Browser Language](#5-browser-language)**
 6. **[Fallback Language](#6-fallback-language)**
