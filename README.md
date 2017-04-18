@@ -89,9 +89,9 @@ You can check if a field has actually been translated or uses fallback content b
 
 [1]: http://getsymphony.com
 [2]: http://en.wikipedia.org/wiki/ISO_639-1
-[3]: https://github.com/hananils/parenthesistabs
-[4]: https://raw.githubusercontent.com/jensscherbl/multilingual/gh-pages/assets/images/preferences.png
-[5]: https://raw.githubusercontent.com/jensscherbl/multilingual/gh-pages/assets/images/sections_fields.png
-[6]: https://raw.githubusercontent.com/jensscherbl/multilingual/gh-pages/assets/images/sections_ui.png
-[7]: https://raw.githubusercontent.com/jensscherbl/multilingual/gh-pages/assets/images/ds_filters.png
-[8]: https://raw.githubusercontent.com/jensscherbl/multilingual/gh-pages/assets/images/ds_output.png
+[3]: https://github.com/symphonists/parenthesistabs
+[4]: https://raw.githubusercontent.com/twiro/multilingual/gh-pages/assets/v1/images/preferences.png
+[5]: https://raw.githubusercontent.com/twiro/multilingual/gh-pages/assets/v1/images/sections_fields.png
+[6]: https://raw.githubusercontent.com/twiro/multilingual/gh-pages/assets/v1/images/sections_ui.png
+[7]: https://raw.githubusercontent.com/twiro/multilingual/gh-pages/assets/v1/images/ds_filters.png
+[8]: https://raw.githubusercontent.com/twiro/multilingual/gh-pages/assets/v1/images/ds_output.png
