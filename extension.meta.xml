@@ -3,6 +3,8 @@
     <name>Multilingual</name>
     <description>Provides basic helpers for multilingual projects.</description>
     <repo type="github">https://github.com/twiro/multilingual</repo>
+    <url type="discuss">http://www.getsymphony.com/discuss/thread/99525/</url>
+    <url type="issues">https://github.com/twiro/multilingual/issues</url>
     <types>
         <type>Multilingual</type>
         <type>Workflow</type>
@@ -18,6 +20,10 @@
         </author>
     </authors>
     <releases>
+        <release version="1.2.1" date="2017-04-18" min="2.3.3" max="2.x.x">
+            - Fix support for PHP 5.3 ([#16](https://github.com/twiro/multilingual/issues/16))
+            - Mark as compatible with PHP 7.0
+        </release>
         <release version="1.2.0" date="2017-03-04" min="2.3.3" max="2.x.x">
             - Added support for "Association Output"
         </release>
