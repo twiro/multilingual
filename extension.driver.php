@@ -47,21 +47,42 @@ class Extension_Multilingual extends Extension
     }
 
     /**
-     * uninstall the extension
+     * enable the extension
      *
-     * @since version 1.0.0
+     * @since version 2.0.0
      */
 
-    public function uninstall()
+    public function enable()
     {
-        // remove languages from configuration
+        // get values from configuration (of a possible previous install)
 
-        Symphony::Configuration()->remove('multilingual');
-        Symphony::Configuration()->write();
+        $languages = Symphony::Configuration()->get('languages', 'multilingual');
+        $htaccess = Symphony::Configuration()->get('htaccess', 'multilingual');
 
+        // check if languages are set and htaccess rewrite rules are activated
+
+        if ($languages && $htaccess === 'yes') {
+
+            // create (blank) set of htaccess rewrite rules and insert the current set of languages
+
+            $htaccess_create = self::setHtaccessRewriteRules('create');
+            $htaccess_edit = self::setHtaccessRewriteRules('edit', $languages);
+
+        }
+        return true;
+    }
+
+    /**
+     * disable the extension
+     *
+     * @since version 2.0.0
+     */
+
+    public function disable()
+    {
         // remove multilingual htaccess rewrite rules
 
-        multilingual::updateHtaccessRewriteRules('remove');
+        self::setHtaccessRewriteRules('remove');
     }
 
     /**
@@ -90,6 +111,24 @@ class Extension_Multilingual extends Extension
         }
 
         return true;
+    }
+
+    /**
+     * uninstall the extension
+     *
+     * @since version 1.0.0
+     */
+
+    public function uninstall()
+    {
+        // remove multilingual from configuration
+
+        Symphony::Configuration()->remove('multilingual');
+        Symphony::Configuration()->write();
+
+        // remove multilingual htaccess rewrite rules
+
+        self::setHtaccessRewriteRules('remove');
     }
 
     /**
@@ -374,14 +413,14 @@ class Extension_Multilingual extends Extension
 
             // create (blank) set of rules and insert the current set of languages
 
-            $htaccess_create = multilingual::setHtaccessRewriteRules('create');
-            $htaccess_edit = multilingual::setHtaccessRewriteRules('edit', $context[settings][multilingual][languages]);
+            $htaccess_create = self::setHtaccessRewriteRules('create');
+            $htaccess_edit = self::setHtaccessRewriteRules('edit', $context[settings][multilingual][languages]);
 
         } else {
 
             // remove all multlingual rules
 
-            $htaccess_remove = multilingual::setHtaccessRewriteRules('remove');
+            $htaccess_remove = self::setHtaccessRewriteRules('remove');
 
         }
 
@@ -391,6 +430,112 @@ class Extension_Multilingual extends Extension
             $context['errors']['multilingual'][htaccess] = __('There were errors writing the <code>.htaccess</code> file. Please verify it is writable.');
         }
 
+    }
+
+    /**
+     * This function offers three methods to manipulate the htaccess-file in order
+     * to make the 'default' multilingual url-structure ('/en/page/') work in the
+     * frontend without having to manually include each language-code in Symphony's
+     * page hierarchy or relying on non-native routing-solutions.
+     *
+     * @since version 2.0.0
+     */
+
+    public function setHtaccessRewriteRules($mode, $languages = null)
+    {
+        // get content of htaccess-file
+
+        $htaccess = @file_get_contents(DOCROOT.'/.htaccess');
+
+        if ($htaccess === false) return false;
+
+        //
+
+        switch ($mode) {
+            case 'create':
+                $htaccess = self::createHtaccessRewriteRules($htaccess);
+                break;
+            case 'edit':
+                $htaccess = self::editHtaccessRewriteRules($htaccess, $languages);
+                break;
+            case 'remove':
+                $htaccess = self::removeHtaccessRewriteRules($htaccess);
+                break;
+        }
+
+        return @file_put_contents(DOCROOT.'/.htaccess', $htaccess);
+    }
+
+    /**
+     * Takes the content of the htaccess-file, strips away any existing multi-
+     * lingual rewrite rules and inserts a set of comments as placeholder for a
+     * new set of rules (that will be injected afterwards). Returns the mani-
+     * pulated content.
+     *
+     * @since version 2.0.0
+     */
+
+    private function createHtaccessRewriteRules($htaccess)
+    {
+        // remove existing multilingual rules from htaccess-file
+
+        $htaccess = self::removeHtaccessRewriteRules($htaccess);
+
+        // insert placeholder comments
+
+        $rule = "### MULTILINGUAL REWRITE RULES - start\n    ### no language codes set\n    ### MULTILINGUAL REWRITE RULES - end";
+        $htaccess = preg_replace('/(\s?### FRONTEND REWRITE)/', " {$rule}\n\n   $1", $htaccess);
+
+        return $htaccess;
+    }
+
+    /**
+     * Takes the prepared content of the htaccess-file (including a placeholder
+     * for a new set of multilingual rules) and a comma-separated set of language-
+     * codes and injects new rewrite rules into the htaccess-file. Returns the
+     * manipulated content.
+     *
+     * @since version 2.0.0
+     */
+
+    private function editHtaccessRewriteRules($htaccess, $languages)
+    {
+        // set a token to be replaced later on as '$n'-matches won't work in a preg_replace replacement string
+
+        $token_symphony = md5('symphony-page');
+
+        // define the htaccess rewrite rules for the given languages
+
+        if (!empty($languages)) {
+            $languages = str_replace(', ', '|', $languages);
+            $rule = "\n    RewriteCond %{REQUEST_FILENAME} !-d";
+            $rule .= "\n    RewriteCond %{REQUEST_FILENAME} !-f";
+            $rule .= "\n    RewriteRule ^({$languages})-?([a-z]{2})?\/(.*\/?)$ index.php?symphony-page={$token_symphony}&%{QUERY_STRING} [L]";
+        } else {
+            $rule = "\n    ### no language codes set";
+        }
+
+        // insert the new rules into the htaccess-content
+
+        $htaccess = preg_replace('/(\s+### MULTILINGUAL REWRITE RULES - start)(.*?)(\s*### MULTILINGUAL REWRITE RULES - end)/s', "$1{$rule}$3", $htaccess);
+
+        // replace the token with the real value
+
+        $htaccess = str_replace($token_symphony, '$3', $htaccess);
+
+        return $htaccess;
+    }
+
+    /**
+     * Takes the content of the htaccess-file and strips away any existing multi-
+     * lingual rewrite rules. Returns the manipulated content.
+     *
+     * @since version 2.0.0
+     */
+
+    private function removeHtaccessRewriteRules($htaccess)
+    {
+        return preg_replace('/\s+### MULTILINGUAL REWRITE RULES - start(.*?)### MULTILINGUAL REWRITE RULES - end/s', NULL, $htaccess);
     }
 
     /**
