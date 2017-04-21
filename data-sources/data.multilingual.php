@@ -10,11 +10,11 @@ Class datasourcemultilingual extends Datasource
         return array(
             'name'         => 'Multilingual',
             'author'       => array(
-                'name'    => 'Roman Klein',
-                'website' => 'https://github.com/twiro'
+                'name'    => 'Multilingual',
+                'website' => 'https://github.com/twiro/multilingual/'
             ),
         'version'      => '2.0',
-        'release-date' => '2017-03-17',
+        'release-date' => '2017-04-21',
         'description'  => 'Includes all language-codes provided by the multilingual-extension with additional information about the main and the current language.'
         );
     }
