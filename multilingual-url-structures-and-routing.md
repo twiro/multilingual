@@ -2,21 +2,21 @@
 
 **Multilingual** supports 3 different methods of **structuring URLs** that contain information about the frontend language:
 
-1. Set a language by **[URL query string](#1-url-query-string)**
-2. Set a language in the **[URL path](#2-url-path)**
-3. Set a language by mapping it to a **[URL (sub)domain](#3-url-domain)**
+1. **[Set a language by URL query string][1]**
+2. **[Set a language in the URL path][2]**
+3. **[Set a language by mapping it to a (sub)domain][3]**
 
 
-## 1. Set a language by URL query string {#1-url-query-string}
+## 1. Set a language by URL query string
 
 This method can easily build open Symphony's URL-structure and doesn't require any further configuration. Simply attach the `language`-parameter to your frontend links, give it the appropriate value and you're done.
 
     domain.com/page/?language=en
 
-**Note:** While this method comes handy for debugging and developing (as it has the highest priority and therefore will overwrite any of the other language detection mechanisms) it shouldn't be used as URL-structure for a multilingual website in production. Regarding SEO and linkability you're [better off](https://support.google.com/webmasters/answer/182192) with one of the succeeding methods.
+**Note:** While this method comes handy for debugging and developing (as it has the highest priority and therefore will overwrite any of the other language detection mechanisms) it shouldn't be used as URL-structure for a multilingual website in production. Regarding SEO and linkability you're [better off][8] with one of the succeeding methods.
 
 
-## 2. Set a language in the URL path {#2-url-path}
+## 2. Set a language in the URL path
 
 Including the language-code at the beginning of the **URL path** is the common and recommended way of structuring multilingual URLs in Symphony.
 
@@ -38,17 +38,17 @@ If you don't want to set up separate pages for each language you could opt for *
 
 But while this method is easy to set up and use it doesn't offer an integrated solution for translating page-names and -handles. Meaning only the section-based parts of your URL will be multilingual while the page-based fragments wont't get translated.
 
-I'm aware of this being a weak point and the missing link in making **Multilingual** a real "All-in-one-Solution", so I might actually try to build an integrated solution ony day. Until then have a look at the chapter [Multilingual pages](#) to learn more about the current possibilities of solving this task.
+I'm aware of this being a weak point and the missing link in making **Multilingual** a real "All-in-one-Solution", so I might actually try to build an integrated solution ony day. Until then have a look at the chapter [Multilingual pages][4] to learn more about the current possibilities of solving this task.
 
 
 ### 2.3 Using a routing extension
 
-If none of the abovementioned methods offers the flexibility you'd like to have you can also use a separate extension to take care of all the routing stuff. **[URL router](https://github.com/symphonists/url_router)** and **[Routing](https://github.com/jensscherbl/routing)** both work well together with **Multilingual** (you can even combine them  with the integrated **htaccess rewrite rules**) and offer the possibility to create fully translated URLs by setting up mutiple routes per page (one for each language).
+If none of the abovementioned methods offers the flexibility you'd like to have you can also use a separate extension to take care of all the routing stuff. **[URL router][6]** and **[Routing][7]** both work well together with **Multilingual** (you can even combine them  with the integrated **htaccess rewrite rules**) and offer the possibility to create fully translated URLs by setting up mutiple routes per page (one for each language).
 
 _(I will do my best to include examples about how to use routing extensions in combination with **Multilingual** soon.)_
 
 
-## 3. URL (Sub)domain {#3-url-domain}
+## 3. Set a language by mapping it to a (Sub)domain
 
 If you want to avoid language-codes in the **URL path** for any reason your best alternative will be language-specific domains (`domain.co.uk`) or subdomains with gTLDs (`de.domain.com`) to define the language of a frontend page.
 
@@ -56,10 +56,20 @@ If you want to avoid language-codes in the **URL path** for any reason your best
 
 [!IMAGE]
 
-## Combining these methods {#combining-methods}
+## Combining these methods
 
-You're not limited to one of these methods with **Multilingual**. The extension will execute the full "[Frontend Language Detection Stack](frontend-language-detection.md)" with every page request and always go with the first valid language-match it is able to detect. This offers the possibility to use a more specific method (like a query string) to overwrite a less specific one (like domain mapping):
+You're not limited to one of these methods with **Multilingual**. The extension will execute the full "[Frontend Language Detection Stack][5]" with every page request and always go with the first valid language-match it is able to detect. This offers the possibility to use a more specific method (like a query string) to overwrite a less specific one (like domain mapping):
 
 #### Example:
 
-In case language configuration would be **`en, de`** and the domain configuration would include **`domain.co.uk=en`** calling the URL **`domain.co.uk/page/?language=de`** would result in **`de`** as frontend language as the language-definition by URL query-string is more specific than the domain-mapping-method. (See [Frontend Language Detection](frontend-language-detection.md) for further details).
+In case language configuration would be **`en, de`** and the domain configuration would include **`domain.co.uk=en`** calling the URL **`domain.co.uk/page/?language=de`** would result in **`de`** as frontend language as the language-definition by URL query-string is more specific than the domain-mapping-method. (See [Frontend Language Detection][5]) for further details).
+
+
+[1]: #1-set-a-language-by-url-query-string
+[2]: #2-set-a-language-in-the-url-path
+[3]: #3-set-a-language-by-mapping-it-to-a-subdomain
+[4]: multilingual-pages.md
+[5]: frontend-language-detection.md
+[6]: https://github.com/symphonists/url_router
+[7]: https://github.com/jensscherbl/routing
+[8]: https://support.google.com/webmasters/answer/182192
