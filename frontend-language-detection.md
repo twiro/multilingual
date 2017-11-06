@@ -25,7 +25,7 @@ If the **URL Query string** contains the parameter `language` and this parameter
 
 If the **URL path** starts with a valid language-code this language-code will be used as frontend-language:
 
-    /en/page/
+    domain.com/en/page/
 
 
 ## 3. URL (Sub)Domain
@@ -41,7 +41,7 @@ If no valid language can be detected in the **URL** the extension will search fo
 
 The cookie `multilingual` will be saved whenever one of the 3 URL-based language-detection-methods detect a valid language-code.
 
-**Note:**  While the availability of a language-cookie offers the possibility to serve multilingual content without a fully-fledged [multilingual URL-structure][7] (and rely on the cookie-value once it's set) this is [not recommended][11]. The cookie is meant to be used for [redirecting][10] to a multilingual URL, not for replacing it.
+**Note:**  _While the availability of a language-cookie offers the possibility to serve multilingual content without a fully-fledged [multilingual URL-structure][7] (and rely on the cookie-value once it's set) this is [not recommended][11]. The cookie is meant to be used for [redirecting][10] to a multilingual URL, not for replacing it._
 
 ## 5. Browser Language
 

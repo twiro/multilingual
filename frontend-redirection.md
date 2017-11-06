@@ -1,8 +1,11 @@
 # Frontend Redirection #
 
-**Multilingual** offers the possibility to redirect a page request that does not contain frontend language information to another **URL** that does contain this information. If, when a how a redirect is performed can be defined in the "**Multilingual Redirect**" configuration.
+**Multilingual** offers the possibility to redirect a page request that does not contain frontend language information to another **URL** that does contain this information.
 
-![IMAGE]
+If, when and how a redirect is performed can be defined in the "**Multilingual Redirect**" configuration.
+
+	![IMAGE "Frontend Redirection Configuration"]
+
 
 ## Redirect
 
@@ -14,7 +17,7 @@ The first setting will allow you to define **if** and **when** a redirect will b
 
 While option **1** and **3** seem pretty self-explanatory option **2** requires an understanding of how the [Frontend Language Detection][1] mechanism of **Multilingual** works:
 
-If **Multilingual** can't detect a valid language-code in the **URL** (either by [query string][2]), [path][3] or [domain-configuration][4]) it will have no distinct information about which language it should set as frontend-language. To make the best out of this situation and not immediately fall back to the configured default language **Multilingual** knows two more language detection methods that try to "guess" which language could be the best possible match. The first of these "guessing" methods will check for a [cookie][5] that might contain language information from a previous visit, the second one will have a look at the [browser settings][6] and check if one of the accepted languages matches one of the offered languages.
+If **Multilingual** can't detect a valid language-code in the **URL** (either by [query string][2], [path][3] or [domain-configuration][4]) it will have no distinct information about which language it should set as frontend-language. To make the best out of this situation and not immediately fall back to the configured default language **Multilingual** comes with two more language detection methods that try to "guess" which language could be the best possible match. The first of these "guessing" methods will check for a [cookie][5] that might contain language information from a previous visit, the second one will have a look at the [browser settings][6] and check if one of the accepted languages matches one of the offered languages.
 
 So what does this mean for our configuration settings?
 
@@ -22,18 +25,18 @@ So what does this mean for our configuration settings?
 2. Choosing "**Only redirect if a matching language is found**" means **Multilingual** will only trigger a redirect if a matching language could be detected by either cookie or browser settings.
 3. Choosing "**Never redirect**" means **Multilingual** will never trigger a redirect.
 
-**Note:** The idea behind option 2 is to avoid "forcing" visitors into the default language in scenarios where it's unlikely that they're comfortable with that language. Instead they could be offered a list of all available languages to manually choose from.
+**Note:** _The idea behind option 2 is to avoid "forcing" visitors into the default language in scenarios where it's unlikely that they're comfortable with that language. Instead they could be offered a list of all available languages to manually choose from._
 
 
 ## Redirect Method
 
-Apart from **when** a redirect will happen you can also define **where** a redirect should point to:  
+Besides **when** a redirect will happen you can also define **where** a redirect should point to:  
 
 1. **domain.tld → domain.tld/xy/** (Redirect to [URL path][9])
 2. **domain.tld → domain.tld?language=xy** (Redirect to [URL query string][8])
 3. **domain.tld → domain.xy** (Redirect to [(sub)domain][10])
 
-**Note:** Redirects will only work as expected if this setting matches the [URL structure][7] you're using for your multilingual website.
+Redirects will only work as expected if this setting matches the [URL structure][7] you're using for your multilingual website.
 
 
 [1]: frontend-language-detection.md

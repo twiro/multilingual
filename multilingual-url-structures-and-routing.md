@@ -9,11 +9,11 @@
 
 ## 1. Set a language by URL query string
 
-This method can easily build open Symphony's URL-structure and doesn't require any further configuration. Simply attach the `language`-parameter to your frontend links, give it the appropriate value and you're done.
+This method can easily build upon Symphony's default URL-structure and doesn't require any further configuration. Simply attach the `language`-parameter to your frontend links, give it the appropriate value and you're done.
 
     domain.com/page/?language=en
 
-**Note:** While this method comes handy for debugging and developing (as it has the highest priority and therefore will overwrite any of the other language detection mechanisms) it shouldn't be used as URL-structure for a multilingual website in production. Regarding SEO and linkability you're [better off][8] with one of the succeeding methods.
+**Note:** _While this method comes handy for debugging and developing (as it has the highest priority and therefore will overwrite any of the other language detection mechanisms) it shouldn't be used as URL-structure for a multilingual website in production. Regarding SEO and linkability you're [better off][8] with one of the succeeding methods._
 
 
 ## 2. Set a language in the URL path
@@ -27,34 +27,59 @@ There are different possibilities how to set up **pages** and **routing** for th
 
 ### 2.1 Using core features only
 
-You can create top-level-pages for each supported language and then use them as parent-pages for all other pages. This might not be the best solution for a website that requires lots of pages (particularly when it comes to support more than 2 languages), but it offers the possibility of setting up a complete multilingual URL structure (including translated page-names and -handles) with nothing more than Symphony's core features.
+You can create top-level-pages for each supported language and then use them as parent-pages for all other pages. This might not be the best solution for a website that requires lots of pages (particularly when it comes to supporting more than 2 languages), but it offers the possibility of setting up a complete multilingual URL structure (including translated page-names and -handles) with nothing more than Symphony's core features.
 
-![IMAGE]
+#### Example:
+
+	![IMAGE "Multilingual page setup"]
+
+**Note:** _I usually don't go with this approach as it simply doesn't feel very "Symphony-like" for me to duplicate such structural essential and fundamental parts of a project as **pages** represent in the Symphony universe._
 
 
 ### 2.2 Using Multilingual's htaccess rewrite rules
 
 If you don't want to set up separate pages for each language you could opt for **Multilingual's** **htaccess rewrite rules** which will turn a default non-multilingual page-setup into a fully multilingual one (supporting all offered languages) with just one click - just tick "**Enable htaccess rewrite rules**" in the configuration and you're done.
 
-But while this method is easy to set up and use it doesn't offer an integrated solution for translating page-names and -handles. Meaning only the section-based parts of your URL will be multilingual while the page-based fragments wont't get translated.
+#### Example:
 
-I'm aware of this being a weak point and the missing link in making **Multilingual** a real "All-in-one-Solution", so I might actually try to build an integrated solution ony day. Until then have a look at the chapter [Multilingual pages][4] to learn more about the current possibilities of solving this task.
+Let's say you have a project that supports both _english_ (`en`) and _german_ (`de`) and you have defined the following core page setup in Symphony:
+
+    domain.com/
+    domain.com/country/{$param}/
+    domain.com/country/city/{$param}/
+    
+After enabling **Multilingual's** **htaccess rewrite rules** you will immediately be able to access these pages under the following multilingual URLs without any further configuration:
+
+    domain.com/en/
+    domain.com/en/country/{$param}/
+    domain.com/en/country/city/{$param}/
+    ---
+    domain.com/de/
+    domain.com/de/country/{$param}/
+    domain.com/de/country/city/{$param}/
+
+
+
+While this method is easy to set up and use it doesn't offer an integrated solution for translating page-names and -handles. So only the section/entry-based parts of your URL will be multilingual while the page-based fragments won't get translated.
+
+**Note:** _I'm well aware of this being **the** weak point and missing link in making **Multilingual** a real "All-in-one-Solution", so I might actually try to build an integrated solution ony day. Until then have a look at the chapter [Multilingual pages][4] to learn more about the current possibilities of solving this task._
 
 
 ### 2.3 Using a routing extension
 
 If none of the abovementioned methods offers the flexibility you'd like to have you can also use a separate extension to take care of all the routing stuff. **[URL router][6]** and **[Routing][7]** both work well together with **Multilingual** (you can even combine them  with the integrated **htaccess rewrite rules**) and offer the possibility to create fully translated URLs by setting up mutiple routes per page (one for each language).
 
-_(I will do my best to include examples about how to use routing extensions in combination with **Multilingual** soon.)_
+**Note:** _I will do my best to include examples about how to use routing extensions in combination with **Multilingual** soon. Until then the best information about this can be found in the chapter [Multilingual pages][4]._
 
 
 ## 3. Set a language by mapping it to a (Sub)domain
 
 If you want to avoid language-codes in the **URL path** for any reason your best alternative will be language-specific domains (`domain.co.uk`) or subdomains with gTLDs (`de.domain.com`) to define the language of a frontend page.
 
-**Multilingual** supports this method by allowing you to directly map (sub)domains to specific languages in the **Domain configuration**. Just add a simple `domain.tld=xy`-rule for each domain you want to set a language for and you're ready to go.
+**Multilingual** supports this method by allowing you to directly map (sub)domains to specific languages in the **Domain configuration**. Just add a simple `domain.tld=xy`-rule for each domain you want to set a language for and you're ready to go:
 
-[!IMAGE]
+	![IMAGE "Multilingual: Domain configuration"]
+
 
 ## Combining these methods
 
@@ -62,7 +87,7 @@ You're not limited to one of these methods with **Multilingual**. The extension 
 
 #### Example:
 
-In case language configuration would be **`en, de`** and the domain configuration would include **`domain.co.uk=en`** calling the URL **`domain.co.uk/page/?language=de`** would result in **`de`** as frontend language as the language-definition by URL query-string is more specific than the domain-mapping-method. (See [Frontend Language Detection][5]) for further details).
+In case your language configuration would be **`en, de`** and the domain configuration would include **`domain.co.uk=en`** calling the URL **`domain.co.uk/page/?language=de`** would result in **`de`** as frontend language as the language-definition by URL query-string is more specific than the domain-mapping-method. _(See [Frontend Language Detection][5]) for further details)_
 
 
 [1]: #1-set-a-language-by-url-query-string
