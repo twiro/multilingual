@@ -444,6 +444,18 @@ class multilingual
 
             }
 
+            // check url for a query string and – if it exists – re-attach it to the redirect-location
+
+            $url_query_string = parse_url($_SERVER['REQUEST_URI'], PHP_URL_QUERY);
+
+            if ($url_query_string) {
+                if ($config_redirect_method === '1') {
+                    $location = $location . '&' . $url_query_string;
+                } else {
+                    $location = $location . '?' . $url_query_string;
+                }
+            }
+
             // perform redirect if a location is set
 
             if ($location) {
