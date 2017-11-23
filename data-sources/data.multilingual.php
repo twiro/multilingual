@@ -14,8 +14,8 @@ Class datasourcemultilingual extends Datasource
                 'website' => 'https://github.com/twiro/multilingual/'
             ),
         'version'      => '2.0',
-        'release-date' => '2017-04-21',
-        'description'  => 'Includes all language-codes provided by the multilingual-extension with additional information about the main and the current language.'
+        'release-date' => '2017-11-23',
+        'description'  => 'Includes all language-codes provided by the multilingual-extension with additional information about the default and the current language.'
         );
     }
 
@@ -42,9 +42,9 @@ Class datasourcemultilingual extends Datasource
 
             $item->setAttribute('handle', $lang);
 
-            // set "main" attribute
+            // set "default" attribute
 
-            if ($i === 0) $item->setAttribute('main', 'yes');
+            if ($i === 0) $item->setAttribute('default', 'yes');
 
             // set "current" attribute
 
