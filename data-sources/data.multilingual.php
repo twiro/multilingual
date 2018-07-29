@@ -13,9 +13,9 @@ Class datasourcemultilingual extends Datasource
                 'name'    => 'Multilingual',
                 'website' => 'https://github.com/twiro/multilingual/'
             ),
-        'version'      => '2.0',
-        'release-date' => '2017-11-23',
-        'description'  => 'Includes all language-codes provided by the multilingual-extension with additional information about the default and the current language.'
+        'version'      => '2.0.0',
+        'release-date' => '2018-07-29',
+        'description'  => 'Includes all language- and country-codes provided by the multilingual-extension with additional information about the default and the current language and country.'
         );
     }
 
@@ -28,7 +28,11 @@ Class datasourcemultilingual extends Datasource
     {
         // create root "multilingual" node
 
-        $result = new XMLElement('multilingual');
+        $ret = new XMLElement('multilingual');
+
+        // create  "languages" node
+
+        $languages = new XMLElement('languages');
 
         $i = 0;
 
@@ -50,12 +54,50 @@ Class datasourcemultilingual extends Datasource
 
             if (multilingual::$language === $lang) $item->setAttribute('current', 'yes');
 
-            $result->appendChild($item);
+            $languages->appendChild($item);
 
             $i++;
 
         }
 
-        return $result;
+        $ret->appendChild($languages);
+
+        if (multilingual::$countries) {
+
+            // create  "countries" node
+
+            $countries = new XMLElement('countries');
+
+            $i = 0;
+
+            foreach (multilingual::$countries as $country) {
+
+                // create new "country" node
+
+                $item = new XMLElement('country', $country);
+
+                // set "handle" attribute
+
+                $item->setAttribute('handle', $country);
+
+                // set "default" attribute
+
+                if ($i === 0) $item->setAttribute('default', 'yes');
+
+                // set "current" attribute
+
+                if (multilingual::$country === $country) $item->setAttribute('current', 'yes');
+
+                $countries->appendChild($item);
+
+                $i++;
+
+            }
+
+            $ret->appendChild($countries);
+
+        }
+
+        return $ret;
     }
 }
