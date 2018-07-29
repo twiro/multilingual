@@ -1,13 +1,19 @@
 <?php
 
+if(!defined("__IN_SYMPHONY__")) die("<h2>Error</h2><p>You cannot directly access this file</p>");
+
 require_once EXTENSIONS . '/multilingual/lib/class.multilingual.php';
 
 class Extension_Multilingual extends Extension
 {
+
     private static $resolved;
 
+
     /**
-     * get subscribed delegates
+     * GET SUBSCRIBED DELEGATES
+     *
+     * https://www.getsymphony.com/learn/api/2.3.3/toolkit/extension/#getSubscribedDelegates
      *
      * @since version 1.0.0
      */
@@ -15,39 +21,57 @@ class Extension_Multilingual extends Extension
     public function getSubscribedDelegates()
     {
         return array(
-
-            array('page'     => '/system/preferences/',
-                  'delegate' => 'AddCustomPreferenceFieldsets',
-                  'callback' => 'addCustomPreferenceFieldsets'),
-
-            array('page'     => '/system/preferences/',
-                  'delegate' => 'Save',
-                  'callback' => 'save'),
-
-            array('page'     => '/frontend/',
-                  'delegate' => 'FrontendPrePageResolve',
-                  'callback' => 'frontendPrePageResolve'),
-
-            array('page'     => '/frontend/',
-                  'delegate' => 'FrontendParamsResolve',
-                  'callback' => 'frontendParamsResolve'),
-
-            array('page'     => '/frontend/',
-                  'delegate' => 'DataSourcePreExecute',
-                  'callback' => 'dataSourcePreExecute'),
-
-            array('page'     => '/frontend/',
-                  'delegate' => 'DataSourceEntriesBuilt',
-                  'callback' => 'dataSourceEntriesBuilt'),
-
-            array('page'     => '/frontend/',
-                  'delegate' => 'DataSourcePostExecute',
-                  'callback' => 'dataSourcePostExecute')
+            array(
+                'page'     => '/frontend/',
+                'delegate' => 'FrontendPrePageResolve',
+                'callback' => 'frontendPrePageResolve'
+            ),
+            array(
+                'page'     => '/frontend/',
+                'delegate' => 'FrontendParamsResolve',
+                'callback' => 'frontendParamsResolve'
+            ),
+            array(
+                'page'     => '/frontend/',
+                'delegate' => 'DataSourcePreExecute',
+                'callback' => 'dataSourcePreExecute'
+            ),
+            array(
+                'page'     => '/frontend/',
+                'delegate' => 'DataSourceEntriesBuilt',
+                'callback' => 'dataSourceEntriesBuilt'
+            ),
+            array(
+                'page'     => '/frontend/',
+                'delegate' => 'DataSourcePostExecute',
+                'callback' => 'dataSourcePostExecute'
+            )
         );
     }
 
+
     /**
+     * INSTALL
+     *
+     * install the extension
+     *
+     * https://www.getsymphony.com/learn/api/2.3.3/toolkit/extension/#install
+     *
+     * @since version 2.0.0
+     */
+
+    public function install()
+    {
+        return true;
+    }
+
+
+    /**
+     * ENABLE
+     *
      * enable the extension
+     *
+     * https://www.getsymphony.com/learn/api/2.3.3/toolkit/extension/#enable
      *
      * @since version 2.0.0
      */
@@ -57,23 +81,29 @@ class Extension_Multilingual extends Extension
         // get values from configuration (of a possible previous install)
 
         $languages = Symphony::Configuration()->get('languages', 'multilingual');
+        $countries = Symphony::Configuration()->get('countries', 'multilingual');
         $htaccess = Symphony::Configuration()->get('htaccess', 'multilingual');
 
         // check if languages are set and htaccess rewrite rules are activated
 
         if ($languages && $htaccess === 'yes') {
 
-            // create (blank) set of htaccess rewrite rules and insert the current set of languages
+            // create htaccess rewrite rules for the configured set of languages/countries
 
-            $htaccess_create = self::setHtaccessRewriteRules('create');
-            $htaccess_edit = self::setHtaccessRewriteRules('edit', $languages);
+            $htaccess_create = multilingual::setHtaccessRewriteRules('create');
+            $htaccess_edit = multilingual::setHtaccessRewriteRules('edit', $languages, $countries);
 
         }
         return true;
     }
 
+
     /**
+     * DISABLE
+     *
      * disable the extension
+     *
+     * https://www.getsymphony.com/learn/api/2.3.3/toolkit/extension/#disable
      *
      * @since version 2.0.0
      */
@@ -82,11 +112,16 @@ class Extension_Multilingual extends Extension
     {
         // remove multilingual htaccess rewrite rules
 
-        self::setHtaccessRewriteRules('remove');
+        multilingual::setHtaccessRewriteRules('remove');
     }
 
+
     /**
+     * UPDATE
+     *
      * update the extension
+     *
+     * https://www.getsymphony.com/learn/api/2.3.3/toolkit/extension/#update
      *
      * @since version 2.0.0
      */
@@ -95,17 +130,29 @@ class Extension_Multilingual extends Extension
     {
         // Add new default configuration settings when updating from version 1.X
 
-        if (version_compare($previousVersion, '2.0', '<')) {
+        if (version_compare($previousVersion, '2.0.0', '<')) {
+
+            // get exisiting languages/domain configuration
+
+            $languages = Symphony::Configuration()->get('languages', 'multilingual');
+            $domains = Symphony::Configuration()->get('domains', 'multilingual');
+
+            // add new configuration settings with their default values
 
             Symphony::Configuration()->setArray(
                 array(
                     'multilingual' => array(
+                        'languages' => $languages,
+	                    'countries' => null,
                         'htaccess' => 'no',
-                        'domains' => '',
-            			'redirect' => '0',
-            			'redirect_method' => '0'
+                        'domains' => $domains,
+                        'redirect_mode' => '0',
+                        'redirect_country' => '0',
+                        'redirect_method' => '0',
+                        'debug' => 'no',
+                        'cookie_disable' => 'no',
                     )
-                ), false
+                ), true
             );
             Symphony::Configuration()->write();
         }
@@ -113,8 +160,13 @@ class Extension_Multilingual extends Extension
         return true;
     }
 
+
     /**
+     * UNINSTALL
+     *
      * uninstall the extension
+     *
+     * https://www.getsymphony.com/learn/api/2.3.3/toolkit/extension/#uninstall
      *
      * @since version 1.0.0
      */
@@ -128,418 +180,40 @@ class Extension_Multilingual extends Extension
 
         // remove multilingual htaccess rewrite rules
 
-        self::setHtaccessRewriteRules('remove');
+        multilingual::setHtaccessRewriteRules('remove');
     }
 
+
     /**
-     * Add configuration settings to symphony's preferences page
-     *
-     * @since version 1.0.0
-     */
+    * FETCH NAVIGATION
+    *
+    * When the Symphony navigation is being generated, this method will be called
+    * to allow extensions to inject any custom backend pages into the navigation.
+    *
+    * http://www.getsymphony.com/learn/api/2.3.3/toolkit/extension/#fetchNavigation
+    *
+    * @since version 2.0.0
+    */
 
-    public function addCustomPreferenceFieldsets($context)
+    public function fetchNavigation()
     {
-        // create fieldset #1 "multilingual"
-
-        $fieldset = new XMLElement('fieldset');
-        $fieldset->setAttribute('class', 'settings');
-        $fieldset->appendChild(new XMLElement('legend', __('Multilingual')));
-
-        // create group & column
-
-        $group = new XMLElement('div', null, array('class' => 'column'));
-        $column = new XMLElement('div', null, array('class' => 'column'));
-
-        // #1.1) Setting "languages"
-
-        // get "languages" settings from configuration
-
-        $languages = Symphony::Configuration()->get('languages', 'multilingual');
-        $languages = str_replace(' ', '',   $languages);
-        $languages = str_replace(',', ', ', $languages);
-
-        // add settings for language codes
-
-        $form_languages['input'] = new XMLElement('label', __('Languages'), array('for' => 'settings-multilingual-languages'));
-        $form_languages['input']->appendChild(
-            Widget::Input(
-                'settings[multilingual][languages]',
-                $languages,
-                'text',
-                array(
-                    'id' => 'settings-multilingual-languages'
-                )
+        return array(
+            array (
+                'location' => __('System'),
+                'name' => __(multilingual::EXT_NAME),
+                'link' => 'configuration',
+                'limit' => 'developer',
             )
         );
-
-        // add help text
-
-        $form_languages['help'] = new XMLElement('p', __('Comma-separated list of <a href="http://en.wikipedia.org/wiki/ISO_639-1">ISO 639-1</a> language codes.'));
-        $form_languages['help']->setAttribute('class', 'help');
-
-        // append to column & group
-
-        $column->appendChildArray($form_languages);
-
-        // append column to fieldset & context
-
-        $group->appendChild($column);
-        $fieldset->appendChild($group);
-        $context['wrapper']->appendChild($fieldset);
-
-        // create fieldset #2 "multilingual routing"
-
-        $fieldset = new XMLElement('fieldset');
-        $fieldset->setAttribute('class', 'settings');
-        $fieldset->appendChild(new XMLElement('legend', __('Multilingual Routing')));
-
-        // create new group & column
-
-        $group = new XMLElement('div', null, array('class' => 'two columns'));
-        $column = new XMLElement('div', null, array('class' => 'column'));
-
-        // #2.1) Setting "htaccess"
-
-        // get "htaccess" settings from configuration
-
-        $htaccess = Symphony::Configuration()->get('htaccess', 'multilingual');
-        if (!$htaccess) $htaccess =  'no';
-
-        // add checkbox for htaccess configuration
-
-        $form_htaccess['input'] = Widget::Checkbox(
-            'settings[multilingual][htaccess]',
-            $htaccess,
-            __('Enable htaccess rewrite rules')
-        );
-
-        // set checkbox value
-
-        if ($htaccess === 'yes') $form_htaccess['input']->setAttribute('checked', 'checked');
-
-        // add help text
-
-        $form_htaccess['help'] = new XMLElement('p', __('Enabling htaccess rewrite rules will allow for using all defined languages with the default multilingual url-structure ("<code>en/page/</code>") out of the box (without relying on any further page- or routing-manipulation).<br/>Refer to the documentation for further details about routing possibilities.'));
-        $form_htaccess['help']->setAttribute('class', 'help');
-
-        // append to column (including optional error message)
-
-        if (isset($context['errors']['multilingual']['htaccess'])) {
-            $column->appendChild(Widget::Error($form_htaccess['input'], $context['errors']['multilingual']['htaccess']));
-        } else {
-            $column->appendChildArray($form_htaccess);
-        }
-
-        // append column to group & create new column
-
-        $group->appendChild($column);
-        $column = new XMLElement('div', null, array('class' => 'column'));
-
-        // #2.2) setting "Domain Language Configuration"
-
-        // get "domains" settings from configuration
-
-        $domains = Symphony::Configuration()->get('domains', 'multilingual');
-        $domains = explode(", ", $domains);
-        $domains = implode("\n", $domains);
-
-        // add textarea for domain configuration
-
-        $form_domains['input'] = new XMLElement('label', __('Domain Configuration'), array('for' => 'settings-multilingual-domains'));
-        $form_domains['input']->appendChild(
-            Widget::Textarea(
-                'settings[multilingual][domains]',
-                5,
-                50,
-                $domains,
-                array(
-                    'id' => 'settings-multilingual-domains'
-                )
-            )
-        );
-
-        // add help text
-
-        $form_domains['help'] = new XMLElement('p', __('Define languages for (sub)domains by adding "<code>domain.tld=xy</code>" rules (one per line)'));
-        $form_domains['help']->setAttribute('class', 'help');
-
-        // append to column & group
-
-        $column->appendChildArray($form_domains);
-
-        // append column to group & fieldset
-
-        $group->appendChild($column);
-        $fieldset->appendChild($group);
-        $context['wrapper']->appendChild($fieldset);
-
-        // create fieldset #3 "multilingual redirect"
-
-        $fieldset = new XMLElement('fieldset');
-        $fieldset->setAttribute('class', 'settings');
-        $fieldset->appendChild(new XMLElement('legend', __('Multilingual Redirect')));
-
-        // create new group & column
-
-        $group = new XMLElement('div', null, array('class' => 'two columns'));
-        $column = new XMLElement('div', null, array('class' => 'column'));
-
-        // #3.1) Setting "Redirect"
-
-        // get "redirect" settings from configuration
-
-        $redirect = Symphony::Configuration()->get('redirect', 'multilingual');
-        if (!$redirect) $redirect =  '0';
-
-        // set redirect options
-
-        $redirect_options = [
-            '0' => __('Always redirect'),
-            '1' => __('Only redirect if a matching language is found'),
-            '2' => __('Never redirect')
-        ];
-
-        // add redirect label
-
-        $form_redirect['label'] = new XMLElement('p', __('Redirect pages that are requested without a valid language code'));
-        $form_redirect['label']->setAttribute('class', 'label');
-        $form_redirect['br'] = new XMLElement('br');
-
-        // add redirect settings (radio buttons)
-
-        foreach ($redirect_options as $key => $value) {
-
-            $label = Widget::Label($value);
-            $radio = Widget::Input('settings[multilingual][redirect]', strval($key), 'radio');
-
-            if ($redirect === strval($key)) {
-                $radio->setAttribute('checked', '');
-            }
-
-            $label->prependChild($radio);
-            $form_redirect[$key] = $label;
-        }
-
-        // append to column
-
-        $column->appendChildArray($form_redirect);
-
-        // append column to group & create new column
-
-        $group->appendChild($column);
-        $column = new XMLElement('div', null, array('class' => 'column'));
-
-        // #3.2) Setting "Redirect Method"
-
-        // get "redirect_method" from configuration
-
-        $redirect_method = Symphony::Configuration()->get('redirect_method', 'multilingual');
-        if (!$redirect_method) $redirect_method =  '0';
-
-        // set redirect_method options
-
-        $redirect_method_options = [
-            array('0', $redirect_method === '0', 'domain.tld → domain.tld/xy/'),
-            array('1', $redirect_method === '1', 'domain.tld → domain.tld?language=xy'),
-            array('2', $redirect_method === '2', 'domain.tld → domain.xy')
-        ];
-
-        // add redirect_method settings
-
-        $form_redirect_method['select'] = new XMLElement('label', __('Redirect method'), array('for' => 'settings-multilingual-redirect-method'));
-        $form_redirect_method['select']->appendChild(
-            Widget::Select(
-                'settings[multilingual][redirect_method]',
-                $redirect_method_options,
-                array(
-                    'id' => 'settings-multilingual-redirect-method'
-                )
-            )
-        );
-
-        // add help text
-
-        $form_redirect_method['help'] = new XMLElement('p', __('Redirecting to (sub)domains requires a valid <a href="#settings-multilingual-domains">Domain Configuration</a> for the detected language.'));
-        $form_redirect_method['help']->setAttribute('class', 'help');
-
-        // append to column/group/fieldset
-
-        $column->appendChildArray($form_redirect_method);
-
-        // append column to group & fieldset
-
-        $group->appendChild($column);
-        $fieldset->appendChild($group);
-        $context['wrapper']->appendChild($fieldset);
     }
 
+
     /**
-     * Perform input validation prior to writing the preferences to the config.
-     * Create/edit/remove multilingual rewrite rules in the htaccess-file.
+     * FRONTEND PRE PAGE RESOLVE
      *
-     * @since version 2.0.0
-     */
-
-    public function save($context)
-    {
-        // explode language string and reduce each single language-code to 2 characters (no regions allowed here)
-
-        $langs = explode(',', str_replace(' ', '', $context[settings][multilingual][languages]));
-
-        foreach ($langs as $lang) {
-            $langs_shortened[] = substr($lang, 0, 2);
-        }
-
-        // remove any duplicates
-
-        $langs_unique = array_unique($langs_shortened);
-
-        // save language configuration as comma-separated string
-
-        $context[settings][multilingual][languages] = implode (", ", $langs_unique);
-
-        // transform domain-configuration (each line representing one domain) into array
-
-        $domains = str_replace(' ', '', $context[settings][multilingual][domains]);
-        $domains = preg_split("/\r\n|\n|\r/", $domains);
-
-        // save domain configuration as comma-separated string
-
-        $context[settings][multilingual][domains] = implode (", ", $domains);
-
-        // set htaccess rewrite rules
-
-        if ($context[settings][multilingual][htaccess] === 'yes') {
-
-            // create (blank) set of rules and insert the current set of languages
-
-            $htaccess_create = self::setHtaccessRewriteRules('create');
-            $htaccess_edit = self::setHtaccessRewriteRules('edit', $context[settings][multilingual][languages]);
-
-        } else {
-
-            // remove all multlingual rules
-
-            $htaccess_remove = self::setHtaccessRewriteRules('remove');
-
-        }
-
-        // check if writing the htaccess-file was successful - if not throw an error
-
-        if ($htaccess_create === false || $htaccess_edit === false || $htaccess_remove === false) {
-            $context['errors']['multilingual'][htaccess] = __('There were errors writing the <code>.htaccess</code> file. Please verify it is writable.');
-        }
-
-    }
-
-    /**
-     * This function offers three methods to manipulate the htaccess-file in order
-     * to make the 'default' multilingual url-structure ('/en/page/') work in the
-     * frontend without having to manually include each language-code in Symphony's
-     * page hierarchy or relying on non-native routing-solutions.
+     * Before page resolve. Allows manipulation of page without redirection.
      *
-     * @since version 2.0.0
-     */
-
-    public function setHtaccessRewriteRules($mode, $languages = null)
-    {
-        // get content of htaccess-file
-
-        $htaccess = @file_get_contents(DOCROOT.'/.htaccess');
-
-        if ($htaccess === false) return false;
-
-        //
-
-        switch ($mode) {
-            case 'create':
-                $htaccess = self::createHtaccessRewriteRules($htaccess);
-                break;
-            case 'edit':
-                $htaccess = self::editHtaccessRewriteRules($htaccess, $languages);
-                break;
-            case 'remove':
-                $htaccess = self::removeHtaccessRewriteRules($htaccess);
-                break;
-        }
-
-        return @file_put_contents(DOCROOT.'/.htaccess', $htaccess);
-    }
-
-    /**
-     * Takes the content of the htaccess-file, strips away any existing multi-
-     * lingual rewrite rules and inserts a set of comments as placeholder for a
-     * new set of rules (that will be injected afterwards). Returns the mani-
-     * pulated content.
-     *
-     * @since version 2.0.0
-     */
-
-    private function createHtaccessRewriteRules($htaccess)
-    {
-        // remove existing multilingual rules from htaccess-file
-
-        $htaccess = self::removeHtaccessRewriteRules($htaccess);
-
-        // insert placeholder comments
-
-        $rule = "### MULTILINGUAL REWRITE RULES - start\n    ### no language codes set\n    ### MULTILINGUAL REWRITE RULES - end";
-        $htaccess = preg_replace('/(\s?### FRONTEND REWRITE)/', " {$rule}\n\n   $1", $htaccess);
-
-        return $htaccess;
-    }
-
-    /**
-     * Takes the prepared content of the htaccess-file (including a placeholder
-     * for a new set of multilingual rules) and a comma-separated set of language-
-     * codes and injects new rewrite rules into the htaccess-file. Returns the
-     * manipulated content.
-     *
-     * @since version 2.0.0
-     */
-
-    private function editHtaccessRewriteRules($htaccess, $languages)
-    {
-        // set a token to be replaced later on as '$n'-matches won't work in a preg_replace replacement string
-
-        $token_symphony = md5('symphony-page');
-
-        // define the htaccess rewrite rules for the given languages
-
-        if (!empty($languages)) {
-            $languages = str_replace(', ', '|', $languages);
-            $rule = "\n    RewriteCond %{REQUEST_FILENAME} !-d";
-            $rule .= "\n    RewriteCond %{REQUEST_FILENAME} !-f";
-            $rule .= "\n    RewriteRule ^({$languages})-?([a-z]{2})?\/(.*\/?)$ index.php?symphony-page={$token_symphony}&%{QUERY_STRING} [L]";
-        } else {
-            $rule = "\n    ### no language codes set";
-        }
-
-        // insert the new rules into the htaccess-content
-
-        $htaccess = preg_replace('/(\s+### MULTILINGUAL REWRITE RULES - start)(.*?)(\s*### MULTILINGUAL REWRITE RULES - end)/s', "$1{$rule}$3", $htaccess);
-
-        // replace the token with the real value
-
-        $htaccess = str_replace($token_symphony, '$3', $htaccess);
-
-        return $htaccess;
-    }
-
-    /**
-     * Takes the content of the htaccess-file and strips away any existing multi-
-     * lingual rewrite rules. Returns the manipulated content.
-     *
-     * @since version 2.0.0
-     */
-
-    private function removeHtaccessRewriteRules($htaccess)
-    {
-        return preg_replace('/\s+### MULTILINGUAL REWRITE RULES - start(.*?)### MULTILINGUAL REWRITE RULES - end/s', NULL, $htaccess);
-    }
-
-    /**
-     * frontend pre page resolve
+     * https://www.getsymphony.com/learn/api/2.3.3/delegates/#FrontendPrePageResolve
      *
      * @since version 1.0.0
      */
@@ -547,37 +221,51 @@ class Extension_Multilingual extends Extension
     public function frontendPrePageResolve($context)
     {
         if (!self::$resolved) {
+            multilingual::$debug = (Symphony::Configuration()->get('debug', 'multilingual') === 'yes') ? true : false;
+            multilingual::$cookie_disable = (Symphony::Configuration()->get('cookie_disable', 'multilingual') === 'yes') ? true : false;
             multilingual::getLanguages();
-            multilingual::detectFrontendLanguage($context);
-            multilingual::redirect($context);
+            multilingual::getCountries();
+            multilingual::frontendDetection($context);
             multilingual::setCookie();
             self::$resolved = true;
         }
     }
 
+
     /**
-     * frontend params resolve
+     * FRONTEND PARAMS RESOLVE
+     *
+     * add parameters to xml output
+     *
+     * https://www.getsymphony.com/learn/api/2.3.3/delegates/#FrontendParamsResolve
      *
      * @since version 1.0.0
      */
 
     public function frontendParamsResolve($context)
     {
-        if (multilingual::$languages) {
-            $context['params']['language'] = multilingual::$language;
-            $context['params']['region'] = multilingual::$region;
-            $context['params']['language-source'] = multilingual::$language_source;
+        // add language & country parameter
+        
+        if (multilingual::$languages) $context['params']['language'] = multilingual::$language;
+        if (multilingual::$countries) $context['params']['country'] = multilingual::$country;
 
-            // additional params for testing (!!! TODO : REMOVE BEFORE FINAL RELEASE !!!)
+        // add additional debugging parameters
 
-            $context['params']['language-cookie'] = $_COOKIE['multilingual'];
-            $context['params']['language-browser'] = $_SERVER['HTTP_ACCEPT_LANGUAGE'];
-            $context['params']['language-log'] = multilingual::$log;
+        if (multilingual::$debug) {
+            if (multilingual::$languages) $context['params']['multilingual-language-source'] = multilingual::$language_log;
+            if (multilingual::$countries) $context['params']['multilingual-country-source'] = multilingual::$country_log;
+            $context['params']['multilingual-browser-cookie'] = $_COOKIE['multilingual'];
+            $context['params']['multilingual-browser-header'] = $_SERVER['HTTP_ACCEPT_LANGUAGE'];
         }
     }
 
+
     /**
-     * datasource filtering
+     * DATA SOURCE PRE EXECUTE
+     *
+     * perform the datasource filtering
+     *
+     * https://www.getsymphony.com/learn/api/2.3.3/delegates/#DataSourcePreExecute
      *
      * @since version 1.0.0
      */
@@ -639,8 +327,13 @@ class Extension_Multilingual extends Extension
         }
     }
 
+
     /**
+     * DATA SOURCE ENTRIES BUILT
+     *
      * datasource filtering fallback
+     *
+     * https://www.getsymphony.com/learn/api/2.3.3/delegates/#DataSourceEntriesBuilt
      *
      * @since version 1.0.0
      */
@@ -687,8 +380,13 @@ class Extension_Multilingual extends Extension
         }
     }
 
+
     /**
-     * datasource output
+     * DATA SOURCE POST EXECUTE
+     *
+     * control the datasource output
+     *
+     * https://www.getsymphony.com/learn/api/2.3.3/delegates/#DataSourcePostExecute
      *
      * @since version 1.0.0
      */
