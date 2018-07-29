@@ -765,9 +765,11 @@ class multilingual
 
         $htaccess = preg_replace('/(\s+### MULTILINGUAL REWRITE RULES - start)(.*?)(\s*### MULTILINGUAL REWRITE RULES - end)/s', "$1{$rule}$3", $htaccess);
 
-        // replace the token with the real value
+        // replace the token with the real value (which itself depends on wether or not countries are included)
 
-        $htaccess = str_replace($token_symphony, '$3', $htaccess);
+        $token_replace = $countries ? '$3' : '$2';
+
+        $htaccess = str_replace($token_symphony, $token_replace, $htaccess);
 
         return $htaccess;
     }
