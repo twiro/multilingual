@@ -603,6 +603,16 @@ class multilingual
 
         if ($redirect) {
 
+            // get current url path (from Symphony Frontend Page object)
+            $url_path = Frontend::Page()->_param['current-path'];
+
+            // get current query string (from Symphony Frontend Page object)
+            $url_query_string = Frontend::Page()->_param['current-query-string'];
+
+            // un-cdata the querystring
+            $url_query_string = str_replace('<![CDATA[', '', $url_query_string);
+            $url_query_string = str_replace(']]>',       '', $url_query_string);
+
             // redirect to (sub)domain (e.g 'xy.domain.com')
 
             if ($config_redirect_method === '2') {
@@ -615,7 +625,7 @@ class multilingual
 
                 foreach ($domains as $domain => $code) {
                     if ($code === self::$language . '-' . self::$country) {
-                        $location = 'http://' . $domain;
+                        $location = 'http://' . $domain . $url_path;
                     }
                 }
 
@@ -623,7 +633,7 @@ class multilingual
 
                 foreach ($domains as $domain => $code) {
                     if ( preg_match("/^" . self::$language . "(?:-)?([a-z]{2})?/", $code) ) {
-                        $location = 'http://' . $domain;
+                        $location = 'http://' . $domain . $url_path;
                     }
                 }
 
@@ -631,23 +641,21 @@ class multilingual
 
             } else if ($config_redirect_method === '1') {
 
-                $url_fragement = $redirect_country ? ('?language=' . self::$language . '&country=' . self::$country) : ('?language=' . self::$language);
+                $url_locale = $redirect_country ? ('?language=' . self::$language . '&country=' . self::$country) : ('?language=' . self::$language);
 
-                $location = URL . $context['page'] . $url_fragement;
+                $location = URL . $url_path . $url_locale;
 
             // redirect to page with url-parameter (e.g 'domain.com/xy/' or 'domain.com/xy-xy/')
 
             } else {
 
-                $url_fragement = $redirect_country ? (self::$language . '-' . self::$country) : self::$language;
+                $url_locale = $redirect_country ? (self::$language . '-' . self::$country) : self::$language;
 
-                $location = URL . '/' . $url_fragement . $context['page'];
+                $location = URL . '/' . $url_locale . $url_path;
 
             }
 
-            // check url for a query string and – if it exists – re-attach it to the redirect-location
-
-            $url_query_string = parse_url($_SERVER['REQUEST_URI'], PHP_URL_QUERY);
+            // re-attach the url-query-string to the redirect-location (if there is one)
 
             if ($url_query_string) {
                 if ($config_redirect_method === '1') {

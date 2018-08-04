@@ -32,7 +32,7 @@ class eventmultilingual_redirect extends Event
                 'website' => 'https://github.com/twiro/multilingual/'
             ),
 	        'version'      => '2.0.0',
-	        'release-date' => '2018-07-29',
+	        'release-date' => '2018-08-04',
 	        'trigger-condition' => ''
         );
     }
@@ -59,8 +59,6 @@ class eventmultilingual_redirect extends Event
 
     /**
      * DOCUMENTATION
-     *
-     * install the extension
      *
      * http://www.getsymphony.com/learn/api/2.3.3/toolkit/event/#documentation
      *
