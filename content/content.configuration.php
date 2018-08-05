@@ -63,7 +63,7 @@ class contentExtensionMultilingualConfiguration extends AdministrationPage
         $fieldset = new XMLElement('fieldset');
         $fieldset->setAttribute('class', 'settings');
         $fieldset->appendChild(
-            new XMLElement('legend', __('Basic settings'))
+            new XMLElement('legend', __('Multilingual Parameters'))
         );
 
         // create group
@@ -234,7 +234,7 @@ class contentExtensionMultilingualConfiguration extends AdministrationPage
 
         $form_domains['help'] = new XMLElement(
             'p',
-            __('Define languages for (sub)domains by adding "<code>domain.tld=xy</code>" rules (one per line).<br/>Also works with additional country codes: "<code>domain.au=en-au</code>"'),
+            __('Define languages for (sub)domains by adding "<code>domain.tld=xy</code>" rules (one per line).<br/>Also works with additional country codes: "<code>domain.ch=de-ch</code>"'),
             array('class' => 'help')
         );
 
@@ -283,8 +283,6 @@ class contentExtensionMultilingualConfiguration extends AdministrationPage
         // add redirect label
 
         $form_redirect_mode['label'] = new XMLElement('p', __('Redirect Mode'));
-        $form_redirect_mode['label']->setAttribute('class', 'label');
-        $form_redirect_mode['br'] = new XMLElement('br');
 
         // add redirect settings (radio buttons)
 
@@ -323,10 +321,8 @@ class contentExtensionMultilingualConfiguration extends AdministrationPage
 
         // add redirect label
 
-        $form_redirect_country['br1'] = new XMLElement('br');
-        $form_redirect_country['label'] = new XMLElement('p', __('Should the redirect event also point to a specific country?'));
-        $form_redirect_country['label']->setAttribute('class', 'label');
-        $form_redirect_country['br2'] = new XMLElement('br');
+        $form_redirect_country['br'] = new XMLElement('br');
+        $form_redirect_country['label'] = new XMLElement('p', __('Should the redirect event also point to a specific country?<br/><span class="help">This option requires at least one country-code in the "<code>countries</code>" field.</span>'));
 
         // add redirect settings (radio buttons)
 
@@ -431,7 +427,7 @@ class contentExtensionMultilingualConfiguration extends AdministrationPage
 
         $form_debug['help'] = new XMLElement(
             'p',
-            __('This option adds the 4 additional parameters "<code>multilingual-language-source</code>", "<code>multilingual-country-source</code>", "<code>multilingual-browser-cookie</code>" and "<code>multilingual-browser-header</code>" to the XML output.'),
+            __('This option adds the following additional parameters to the XML output:<br/><br/><code>multilingual-language-source</code><br/><code>multilingual-country-source</code><br/><code>multilingual-browser-cookie</code><br/><code>multilingual-browser-header</code>'),
             array('class' => 'help')
         );
 
@@ -464,7 +460,7 @@ class contentExtensionMultilingualConfiguration extends AdministrationPage
 
         // add help text
 
-        $form_cookie_disable['help'] = new XMLElement('p', __("This option disables the setting and usage of the multilingual cookie, so it won't be considered in the frontend language/country detection process"));
+        $form_cookie_disable['help'] = new XMLElement('p', __("This option disables the multilingual cookie, so it won't be considered in the frontend language/country detection process."));
         $form_cookie_disable['help']->setAttribute('class', 'help');
 
         // append to column, group & fieldset
