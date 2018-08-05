@@ -244,10 +244,20 @@ class Extension_Multilingual extends Extension
 
     public function frontendParamsResolve($context)
     {
-        // add language & country parameter
-        
+        // add language parameter (if at least one language is defined)
+
         if (multilingual::$languages) $context['params']['language'] = multilingual::$language;
-        if (multilingual::$countries) $context['params']['country'] = multilingual::$country;
+
+        // add country parameter (if at least one country is defined)
+        // (only set a value if a valid and distinct country-code was found in the url)
+
+        if (multilingual::$countries) {
+            if (multilingual::$country && multilingual::$country_source === 'url') {
+                $context['params']['country'] = multilingual::$country;
+            } else {
+                $context['params']['country'] = '';
+            }
+        }
 
         // add additional debugging parameters
 
