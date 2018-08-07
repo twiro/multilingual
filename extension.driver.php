@@ -81,17 +81,17 @@ class Extension_Multilingual extends Extension
         // get values from configuration (of a possible previous install)
 
         $languages = Symphony::Configuration()->get('languages', 'multilingual');
-        $countries = Symphony::Configuration()->get('countries', 'multilingual');
+        $regions = Symphony::Configuration()->get('regions', 'multilingual');
         $htaccess = Symphony::Configuration()->get('htaccess', 'multilingual');
 
         // check if languages are set and htaccess rewrite rules are activated
 
         if ($languages && $htaccess === 'yes') {
 
-            // create htaccess rewrite rules for the configured set of languages/countries
+            // create htaccess rewrite rules for the configured set of languages/regions
 
             $htaccess_create = multilingual::setHtaccessRewriteRules('create');
-            $htaccess_edit = multilingual::setHtaccessRewriteRules('edit', $languages, $countries);
+            $htaccess_edit = multilingual::setHtaccessRewriteRules('edit', $languages, $regions);
 
         }
         return true;
@@ -143,11 +143,11 @@ class Extension_Multilingual extends Extension
                 array(
                     'multilingual' => array(
                         'languages' => $languages,
-	                    'countries' => null,
+	                    'regions' => null,
                         'htaccess' => 'no',
                         'domains' => $domains,
                         'redirect_mode' => '0',
-                        'redirect_country' => '0',
+                        'redirect_region' => '0',
                         'redirect_method' => '0',
                         'debug' => 'no',
                         'cookie_disable' => 'no',
@@ -224,7 +224,7 @@ class Extension_Multilingual extends Extension
             multilingual::$debug = (Symphony::Configuration()->get('debug', 'multilingual') === 'yes') ? true : false;
             multilingual::$cookie_disable = (Symphony::Configuration()->get('cookie_disable', 'multilingual') === 'yes') ? true : false;
             multilingual::getLanguages();
-            multilingual::getCountries();
+            multilingual::getRegions();
             multilingual::frontendDetection($context);
             multilingual::setCookie();
             self::$resolved = true;
@@ -248,14 +248,14 @@ class Extension_Multilingual extends Extension
 
         if (multilingual::$languages) $context['params']['language'] = multilingual::$language;
 
-        // add country parameter (if at least one country is defined)
-        // (only set a value if a valid and distinct country-code was found in the url)
+        // add region parameter (if at least one region is defined)
+        // (only set a value if a valid and distinct region-code was found in the url)
 
-        if (multilingual::$countries) {
-            if (multilingual::$country && multilingual::$country_source === 'url') {
-                $context['params']['country'] = multilingual::$country;
+        if (multilingual::$regions) {
+            if (multilingual::$region && multilingual::$region_source === 'url') {
+                $context['params']['region'] = multilingual::$region;
             } else {
-                $context['params']['country'] = '';
+                $context['params']['region'] = '';
             }
         }
 
@@ -263,7 +263,7 @@ class Extension_Multilingual extends Extension
 
         if (multilingual::$debug) {
             if (multilingual::$languages) $context['params']['multilingual-language-source'] = multilingual::$language_log;
-            if (multilingual::$countries) $context['params']['multilingual-country-source'] = multilingual::$country_log;
+            if (multilingual::$regions) $context['params']['multilingual-region-source'] = multilingual::$region_log;
             $context['params']['multilingual-browser-cookie'] = $_COOKIE['multilingual'];
             $context['params']['multilingual-browser-header'] = $_SERVER['HTTP_ACCEPT_LANGUAGE'];
         }

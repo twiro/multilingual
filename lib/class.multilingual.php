@@ -83,33 +83,33 @@ class multilingual
 
 
     /**
-     * $countries
+     * $regions
      *
-     * An array of ISO 3166-1 country-codes that represent the configured
-     * countries offered by this extension.
+     * An array of ISO 3166-1 region-codes that represent the configured
+     * regions offered by this extension.
      *
      * @var array
      */
 
-    static $countries;
+    static $regions;
 
 
     /**
-     * $country
+     * $region
      *
-     * A single ISO 3166-1 country-code that represents the detected country
+     * A single ISO 3166-1 region-code that represents the detected region
      * of a frontend page request.
      *
      * @var string
      */
 
-    static $country;
+    static $region;
 
 
     /**
-     * $country_source
+     * $region_source
      *
-     * Defines how $country has been detected by one of these values:
+     * Defines how $region has been detected by one of these values:
      * 'url', 'cookie', 'browser' or 'default'.
      *
      * See $language_source for further explanations of these values.
@@ -117,19 +117,19 @@ class multilingual
      * @var string
      */
 
-    static $country_source;
+    static $region_source;
 
 
     /**
-     * $country_log
+     * $region_log
      *
-     * Information about how the frontend country was detected in the current
+     * Information about how the frontend region was detected in the current
      * page request.
      *
      * @var string
      */
 
-    static $country_log = 'No country detected';
+    static $region_log = 'No region detected';
 
 
     /**
@@ -149,7 +149,7 @@ class multilingual
      * $cookie_disable
      *
      * By default the multilingual cookie is enabled and used for frontend language
-     * and country detection. If the cookie is disabled in the preferences the value
+     * and region detection. If the cookie is disabled in the preferences the value
      * of this parameter will be 'yes'.
      *
      * @var string
@@ -176,18 +176,18 @@ class multilingual
 
 
     /**
-     * GET COUNTRIES
+     * GET REGIONS
      *
-     * Fetch the country-codes from the configuration file and return them
+     * Fetch the region-codes from the configuration file and return them
      * as an array.
      *
      * @since version 2.0.0
      */
 
-    public function getCountries()
+    public function getRegions()
     {
-        if (self::$countries = Symphony::Configuration()->get('countries', 'multilingual')) {
-            self::$countries = explode(',', str_replace(' ', '', self::$countries));
+        if (self::$regions = Symphony::Configuration()->get('regions', 'multilingual')) {
+            self::$regions = explode(',', str_replace(' ', '', self::$regions));
         }
     }
 
@@ -195,7 +195,7 @@ class multilingual
     /**
      * FRONTEND DETECTION
      *
-     * Detects the language and the country of a frontend page request based on 
+     * Detects the language and the region of a frontend page request based on 
      * one of the following methods:
      *
      * A) URL query string (e.g "/page/?language=en")
@@ -204,7 +204,7 @@ class multilingual
      * D) Cookie ("multilingual")
      * E) Browser preferences (via "accept language" header)
      *
-     * Uses the default language/country of the extension as fallback if
+     * Uses the default language/region of the extension as fallback if
      * all of these methods fail in finding a valid match. (F)
      *
      * @since version 2.0.0
@@ -230,10 +230,10 @@ class multilingual
             self::$language_source = 'url';
             self::$language_log = 'Distinct language-code detected by url path (B)';
 
-            if(self::$countries && in_array($match[2], self::$countries)) {
-                self::$country = $match[2];
-                self::$country_source = 'url';
-                self::$country_log = 'Distinct country-code detected by url path (B)';
+            if(self::$regions && in_array($match[2], self::$regions)) {
+                self::$region = $match[2];
+                self::$region_source = 'url';
+                self::$region_log = 'Distinct region-code detected by url path (B)';
             }
 
         // B.2) URL path (e.g "/en/page/") matching a native symphony page by a htaccess rewrite rule
@@ -244,10 +244,10 @@ class multilingual
             self::$language_source = 'url';
             self::$language_log = 'Distinct language-code detected by url path (using htaccess rewrite rules) (B)';
 
-            if(self::$countries && in_array($match[2], self::$countries)) {
-                self::$country = $match[2];
-                self::$country_source = 'url';
-                self::$country_log = 'Distinct country-code detected by url path (using htaccess rewrite rules) (B)';
+            if(self::$regions && in_array($match[2], self::$regions)) {
+                self::$region = $match[2];
+                self::$region_source = 'url';
+                self::$region_log = 'Distinct region-code detected by url path (using htaccess rewrite rules) (B)';
             }
 
         // C) URL (sub)domain (e.g "domain.co.uk/page/")
@@ -258,10 +258,10 @@ class multilingual
             self::$language_source = 'url';
             self::$language_log = 'Distinct language-code detected by (sub)domain (C)';
 
-            if(self::$countries && in_array($match[2], self::$countries)) {
-                self::$country = $match[2];
-                self::$country_source = 'url';
-                self::$country_log = 'Distinct country-code detected by (sub)domain (C)';
+            if(self::$regions && in_array($match[2], self::$regions)) {
+                self::$region = $match[2];
+                self::$region_source = 'url';
+                self::$region_log = 'Distinct region-code detected by (sub)domain (C)';
             }
 
         // D) Cookie ("multilingual")
@@ -272,10 +272,10 @@ class multilingual
             self::$language_source = 'cookie';
             self::$language_log = 'Language-code detected by cookie (D)';
             
-            if(self::$countries && in_array($match[2], self::$countries)) {
-                self::$country = $match[2];
-                self::$country_source = 'cookie';
-                self::$country_log = 'Country-code detected by cookie (D)';
+            if(self::$regions && in_array($match[2], self::$regions)) {
+                self::$region = $match[2];
+                self::$region_source = 'cookie';
+                self::$region_log = 'Region-code detected by cookie (D)';
             }
 
             
@@ -287,10 +287,10 @@ class multilingual
             self::$language_source = 'browser';
             self::$language_log = 'Language-code detected by browser header (E)';
 
-            if(self::$countries && in_array($match[2], self::$countries)) {
-                self::$country = $match[2];
-                self::$country_source = 'browser';
-                self::$country_log = 'Country-code detected by browser header (E)';
+            if(self::$regions && in_array($match[2], self::$regions)) {
+                self::$region = $match[2];
+                self::$region_source = 'browser';
+                self::$region_log = 'Region-code detected by browser header (E)';
             }
 
         // if no valid matching language was found using these approaches use the extensions default language as fallback
@@ -303,43 +303,43 @@ class multilingual
 
         }
 
-        // if a valid country code is set in the URL query string its value overwrites any other detection method
+        // if a valid region code is set in the URL query string its value overwrites any other detection method
 
-        if (self::$countries && isset($_GET['country']) && in_array($_GET['country'], self::$countries)) {
+        if (self::$regions && isset($_GET['region']) && in_array($_GET['region'], self::$regions)) {
 
-            self::$country = $_GET['country'];
-            self::$country_source = 'url';
-            self::$country_log = 'Distinct country-code detected by url query string (A)';
+            self::$region = $_GET['region'];
+            self::$region_source = 'url';
+            self::$region_log = 'Distinct region-code detected by url query string (A)';
 
         }
 
-        // if at least one country is defined in the preferences, but no country was found with the method that suceeded in language-detection…
+        // if at least one region is defined in the preferences, but no region was found with the method that suceeded in language-detection…
 
-        if (self::$countries && !self::$country) {
+        if (self::$regions && !self::$region) {
 
             // …we need to have another look at the cookie…
 
-            if (!self::$cookie_disable && preg_match('/^([a-z]{2})-([a-z]{2})?/', $_COOKIE['multilingual'], $match) && in_array($match[2], self::$countries)) {
+            if (!self::$cookie_disable && preg_match('/^([a-z]{2})-([a-z]{2})?/', $_COOKIE['multilingual'], $match) && in_array($match[2], self::$regions)) {
 
-                self::$country = $match[2];
-                self::$country_source = 'cookie';
-                self::$country_log = 'Country-code detected by cookie (D)';
+                self::$region = $match[2];
+                self::$region_source = 'cookie';
+                self::$region_log = 'Region-code detected by cookie (D)';
 
             // …or at the browser…
 
-            } else if ($match = self::detectBrowserLanguage() && in_array($match[2], self::$countries)) {
+            } else if ($match = self::detectBrowserLanguage() && in_array($match[2], self::$regions)) {
 
-                self::$country = $match[2];
-                self::$country_source = 'browser';
-                self::$country_log = 'Country-code detected by browser header (E)';
+                self::$region = $match[2];
+                self::$region_source = 'browser';
+                self::$region_log = 'Region-code detected by browser header (E)';
 
-            // … or fall back to the "default" country provided by the extension configuration
+            // … or fall back to the "default" region provided by the extension configuration
 
             } else {
 
-                self::$country = self::$countries[0];
-                self::$country_source = 'default';
-                self::$country_log = 'No country could be detected, so we fall back to the first country provided by the configuration (F)';
+                self::$region = self::$regions[0];
+                self::$region_source = 'default';
+                self::$region_log = 'No region could be detected, so we fall back to the first region provided by the configuration (F)';
             }
         }
     }
@@ -351,9 +351,9 @@ class multilingual
      * Checks whether or not a valid language-code is assigned to the current domain.
      *
      * If a valid match is found in the configuration the function will return an
-     * array that contains the full assigned language-country-string, the extracted
-     * language-code and also the optional country-code (if it matches on of the
-     * configured countries).
+     * array that contains the full assigned language-region-string, the extracted
+     * language-code and also the optional region-code (if it matches on of the
+     * configured regions).
      *
      * Example of domain configuration data and resulting output:
      *
@@ -381,7 +381,7 @@ class multilingual
 
         if (array_key_exists($domain, $domains)) {
 
-            // transform language-country-code into array separating language and country
+            // transform language-region-code into array separating language and region
 
             $code = explode('-', $domains[$domain], 2);
 
@@ -389,13 +389,13 @@ class multilingual
 
             if (in_array($code[0], self::$languages)) {
 
-                // … check if there is also a valid match with a country…
+                // … check if there is also a valid match with a region…
 
-                $code_country = in_array($code[1], self::$countries) ? $code[1] : '';
+                $code_region = in_array($code[1], self::$regions) ? $code[1] : '';
 
                 // …and return the result as an array
 
-                return array($domains[$domain], $code[0], $code_country );
+                return array($domains[$domain], $code[0], $code_region );
             }
             return false;
         }
@@ -422,7 +422,7 @@ class multilingual
 
     private function getDomainConfiguration()
     {
-        // build associative array of domains and corresponding language-country-codes
+        // build associative array of domains and corresponding language-region-codes
 
         $domain_settings = explode(", ", Symphony::Configuration()->get('domains', 'multilingual'));
 
@@ -443,8 +443,8 @@ class multilingual
      * ratings into account, so that the first match will be the best one possible.
      *
      * If a valid match is detected the function will return an array that contains
-     * the full assigned language-country-string, the extracted language-code and
-     * optionally also the extracted country-code.
+     * the full assigned language-region-string, the extracted language-code and
+     * optionally also the extracted region-code.
      *
      * See detectDomainLanguage() for example of returned data.
      *
@@ -484,7 +484,7 @@ class multilingual
                 arsort($langs_sorted, SORT_NUMERIC);
 
                 // match the browser languges and the configured languages
-                // build an array that includes the matches and (if available) the preferred country-codes of each language
+                // build an array that includes the matches and (if available) the preferred region-codes of each language
 
                 $matches = array();
 
@@ -496,11 +496,11 @@ class multilingual
 
                     if (in_array($code, self::$languages))  {
 
-                        // check if the language already has been included with a optional country code
+                        // check if the language already has been included with a optional region code
 
                         if (!$matches[$code] OR !strpos($matches[$code], '-')) {
 
-                            // if not include it's complete string in the array (including the optional country code)
+                            // if not include it's complete string in the array (including the optional region code)
 
                             $matches[substr($lang, 0, 2)] = $lang;
                         }
@@ -532,11 +532,11 @@ class multilingual
      * REDIRECT
      *
      * Redirects a frontend page request without distinct and valid language-
-     * code to a url with a valid and distinct language- (and optionally country-)
+     * code to a url with a valid and distinct language- (and optionally region-)
      * code if the extensions configuration requirements for a redirect are met.
      *
      * Redirecting to (sub)domains relies on the "Domain Configuration"-data
-     * and also takes the optional country-code in account when trying to
+     * and also takes the optional region-code in account when trying to
      * find the best match to redirect to.
      *
      * @since version 2.0.0
@@ -547,7 +547,7 @@ class multilingual
         // get multilingual redirect configuration
 
         $config_redirect_mode = Symphony::Configuration()->get('redirect_mode', 'multilingual');
-        $config_redirect_country = Symphony::Configuration()->get('redirect_country', 'multilingual');
+        $config_redirect_region = Symphony::Configuration()->get('redirect_region', 'multilingual');
         $config_redirect_method = Symphony::Configuration()->get('redirect_method', 'multilingual');
 
         // A) SCENARIOS THAT DO NOT TRIGGER A REDIRECT
@@ -556,21 +556,21 @@ class multilingual
 
         if(self::$language_source === 'url') {
 
-            // … and no countries are defined
+            // … and no regions are defined
 
-            if(!self::$countries) return false;
+            if(!self::$regions) return false;
 
-            // … and countries shouldn't be included in a redirect
+            // … and regions shouldn't be included in a redirect
 
-            if($config_redirect_country === '2') return false;
+            if($config_redirect_region === '2') return false;
 
-            // … and a valid and distinct country-code is also found in the url
+            // … and a valid and distinct region-code is also found in the url
 
-            if(self::$country_source === 'url') return false;
+            if(self::$region_source === 'url') return false;
 
-            // … and a matching country is required, but not found
+            // … and a matching region is required, but not found
 
-            if($config_redirect_country === '1' && self::$country_source === 'default') return false;
+            if($config_redirect_region === '1' && self::$region_source === 'default') return false;
         }
 
         // B) SCENARIOS THAT MIGHT TRIGGER A REDIRECT
@@ -587,17 +587,17 @@ class multilingual
 
         if ($config_redirect_mode === '1' && (self::$language_source === 'cookie' || self::$language_source === 'browser')) $redirect = true;
         
-        // check country redirect conditions…
+        // check region redirect conditions…
 
-        $redirect_country = false;
+        $redirect_region = false;
 
-        // …does configuration say "always redirect" and was a target country found?
+        // …does configuration say "always redirect" and was a target region found?
 
-        if ($config_redirect_country === '0' && self::$country) $redirect_country = true;
+        if ($config_redirect_region === '0' && self::$region) $redirect_region = true;
 
-        // …if configuration says "only redirect if a matching country was found" (via cookie or browser)
+        // …if configuration says "only redirect if a matching region was found" (via cookie or browser)
 
-        if ($config_redirect_country === '1' && (self::$country_source === 'cookie' || self::$country_source === 'browser')) $redirect_country = true;
+        if ($config_redirect_region === '1' && (self::$region_source === 'cookie' || self::$region_source === 'browser')) $redirect_region = true;
         
         // perform redirect if conditions are met
 
@@ -605,6 +605,9 @@ class multilingual
 
             // get current url path (from Symphony Frontend Page object)
             $url_path = Frontend::Page()->_param['current-path'];
+
+            // if the url starts with a valid language-parameter – remove it
+            $url_path = (preg_match('/^\/([a-z]{2})\//', $url_path, $match) && in_array($match[1], self::$languages)) ? substr($url_path, 3) : $url_path;
 
             // get current query string (from Symphony Frontend Page object)
             $url_query_string = Frontend::Page()->_param['current-query-string'];
@@ -621,10 +624,10 @@ class multilingual
 
                 $domains = self::getDomainConfiguration();
 
-                // check if a domain configuration exists that matches both the current language- and country-code
+                // check if a domain configuration exists that matches both the current language- and region-code
 
                 foreach ($domains as $domain => $code) {
-                    if ($code === self::$language . '-' . self::$country) {
+                    if ($code === self::$language . '-' . self::$region) {
                         $location = 'http://' . $domain . $url_path;
                     }
                 }
@@ -641,7 +644,7 @@ class multilingual
 
             } else if ($config_redirect_method === '1') {
 
-                $url_locale = $redirect_country ? ('?language=' . self::$language . '&country=' . self::$country) : ('?language=' . self::$language);
+                $url_locale = $redirect_region ? ('?language=' . self::$language . '&region=' . self::$region) : ('?language=' . self::$language);
 
                 $location = URL . $url_path . $url_locale;
 
@@ -649,7 +652,7 @@ class multilingual
 
             } else {
 
-                $url_locale = $redirect_country ? (self::$language . '-' . self::$country) : self::$language;
+                $url_locale = $redirect_region ? (self::$language . '-' . self::$region) : self::$language;
 
                 $location = URL . '/' . $url_locale . $url_path;
 
@@ -688,7 +691,7 @@ class multilingual
      * @since version 2.0.0
      */
 
-    public function setHtaccessRewriteRules($mode, $languages = null, $countries = null)
+    public function setHtaccessRewriteRules($mode, $languages = null, $regions = null)
     {
         // get content of htaccess-file
 
@@ -703,7 +706,7 @@ class multilingual
                 $htaccess = self::createHtaccessRewriteRules($htaccess);
                 break;
             case 'edit':
-                $htaccess = self::editHtaccessRewriteRules($htaccess, $languages, $countries);
+                $htaccess = self::editHtaccessRewriteRules($htaccess, $languages, $regions);
                 break;
             case 'remove':
                 $htaccess = self::removeHtaccessRewriteRules($htaccess);
@@ -745,13 +748,13 @@ class multilingual
      *
      * Takes the prepared content of the htaccess-file (including a placeholder
      * for a new set of multilingual rules) and a comma-separated set of language-
-     * codes and country-codes and injects new rewrite rules into the htaccess-file.
+     * codes and region-codes and injects new rewrite rules into the htaccess-file.
      * Returns the manipulated content.
      *
      * @since version 2.0.0
      */
 
-    private function editHtaccessRewriteRules($htaccess, $languages, $countries)
+    private function editHtaccessRewriteRules($htaccess, $languages, $regions)
     {
         // set a token to be replaced later on as '$n'-matches won't work in a preg_replace replacement string
 
@@ -761,10 +764,10 @@ class multilingual
 
         if (!empty($languages)) {
             $regex_languages = '(' . str_replace(', ', '|', $languages) . ')';
-            $regex_countries = $countries ? '-?(' . str_replace(', ', '|', $countries) . ')?' : '';
+            $regex_regions = $regions ? '-?(' . str_replace(', ', '|', $regions) . ')?' : '';
             $rule = "\n    RewriteCond %{REQUEST_FILENAME} !-d";
             $rule .= "\n    RewriteCond %{REQUEST_FILENAME} !-f";
-            $rule .= "\n    RewriteRule ^{$regex_languages}{$regex_countries}\/(.*\/?)$ index.php?symphony-page={$token_symphony}&%{QUERY_STRING} [L]";
+            $rule .= "\n    RewriteRule ^{$regex_languages}{$regex_regions}\/(.*\/?)$ index.php?symphony-page={$token_symphony}&%{QUERY_STRING} [L]";
         } else {
             $rule = "\n    ### no language codes set";
         }
@@ -773,9 +776,9 @@ class multilingual
 
         $htaccess = preg_replace('/(\s+### MULTILINGUAL REWRITE RULES - start)(.*?)(\s*### MULTILINGUAL REWRITE RULES - end)/s', "$1{$rule}$3", $htaccess);
 
-        // replace the token with the real value (which itself depends on wether or not countries are included)
+        // replace the token with the real value (which itself depends on wether or not regions are included)
 
-        $token_replace = $countries ? '$3' : '$2';
+        $token_replace = $regions ? '$3' : '$2';
 
         $htaccess = str_replace($token_symphony, $token_replace, $htaccess);
 
@@ -803,7 +806,7 @@ class multilingual
      *
      * If a valid and distinct language-code was detected in the url this
      * function will save the language-code in a cookie. If a valid and distinct
-     * country-code is detected it will be added to thecookie string.
+     * region-code is detected it will be added to thecookie string.
      *
      * If the parameter $cookie_disable is set to 'true' the multilingual cookie
      * will be resetted.
@@ -815,7 +818,7 @@ class multilingual
     {
         // build cookie value
 
-        $cookie_value = self::$country ? self::$language . '-' . self::$country : self::$language;
+        $cookie_value = self::$region ? self::$language . '-' . self::$region : self::$language;
 
         // check if cookie is disabled and if so reset cookie
 

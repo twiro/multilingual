@@ -14,8 +14,8 @@ Class datasourcemultilingual extends Datasource
                 'website' => 'https://github.com/twiro/multilingual/'
             ),
         'version'      => '2.0.0',
-        'release-date' => '2018-07-29',
-        'description'  => 'Includes all language- and country-codes provided by the multilingual-extension with additional information about the default and the current language and country.'
+        'release-date' => '2018-08-07',
+        'description'  => 'Includes all language- and region-codes provided by the multilingual-extension with additional information about the default and the current language and region.'
         );
     }
 
@@ -62,23 +62,23 @@ Class datasourcemultilingual extends Datasource
 
         $ret->appendChild($languages);
 
-        if (multilingual::$countries) {
+        if (multilingual::$regions) {
 
-            // create  "countries" node
+            // create  "regions" node
 
-            $countries = new XMLElement('countries');
+            $regions = new XMLElement('regions');
 
             $i = 0;
 
-            foreach (multilingual::$countries as $country) {
+            foreach (multilingual::$regions as $region) {
 
-                // create new "country" node
+                // create new "region" node
 
-                $item = new XMLElement('country', $country);
+                $item = new XMLElement('region', $region);
 
                 // set "handle" attribute
 
-                $item->setAttribute('handle', $country);
+                $item->setAttribute('handle', $region);
 
                 // set "default" attribute
 
@@ -86,15 +86,15 @@ Class datasourcemultilingual extends Datasource
 
                 // set "current" attribute
 
-                if (multilingual::$country === $country) $item->setAttribute('current', 'yes');
+                if (multilingual::$region === $region) $item->setAttribute('current', 'yes');
 
-                $countries->appendChild($item);
+                $regions->appendChild($item);
 
                 $i++;
 
             }
 
-            $ret->appendChild($countries);
+            $ret->appendChild($regions);
 
         }
 

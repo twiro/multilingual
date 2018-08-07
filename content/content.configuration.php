@@ -109,41 +109,41 @@ class contentExtensionMultilingualConfiguration extends AdministrationPage
         $group->appendChild($column);
 
 
-        // #1.2) Setting "countries"
+        // #1.2) Setting "Regions"
 
         $column = new XMLElement('div', null, array('class' => 'column'));
 
-        // get "countries" settings from configuration
+        // get "regions" settings from configuration
 
-        $countries = Symphony::Configuration()->get('countries', 'multilingual');
-        $countries = str_replace(' ', '',   $countries);
-        $countries = str_replace(',', ', ', $countries);
+        $regions = Symphony::Configuration()->get('regions', 'multilingual');
+        $regions = str_replace(' ', '',   $regions);
+        $regions = str_replace(',', ', ', $regions);
 
-        // add settings for country codes
+        // add settings for region codes
 
-        $form_countries['input'] = new XMLElement('label', __('Countries <i>Optional</i>'), array('for' => 'settings-multilingual-countries'));
-        $form_countries['input']->appendChild(
+        $form_regions['input'] = new XMLElement('label', __('Regions <i>Optional</i>'), array('for' => 'settings-multilingual-regions'));
+        $form_regions['input']->appendChild(
             Widget::Input(
-                'multilingual[countries]',
-                $countries,
+                'multilingual[regions]',
+                $regions,
                 'text',
                 array(
-                    'id' => 'settings-multilingual-countries'
+                    'id' => 'settings-multilingual-regions'
                 )
             )
         );
 
         // add help text
 
-        $form_countries['help'] = new XMLElement(
+        $form_regions['help'] = new XMLElement(
             'p',
-            __('Comma-separated list of <a href="https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2">ISO 3166-1 alpha-2</a> country codes.'),
+            __('Comma-separated list of <a href="https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2">ISO 3166-1 alpha-2</a> region codes.'),
             array('class' => 'help')
         );
 
         // append to column & group
 
-        $column->appendChildArray($form_countries);
+        $column->appendChildArray($form_regions);
         $group->appendChild($column);
 
         // append column to fieldset & context
@@ -234,7 +234,7 @@ class contentExtensionMultilingualConfiguration extends AdministrationPage
 
         $form_domains['help'] = new XMLElement(
             'p',
-            __('Define languages for (sub)domains by adding "<code>domain.tld=xy</code>" rules (one per line).<br/>Also works with additional country codes: "<code>domain.ch=de-ch</code>"'),
+            __('Define languages for (sub)domains by adding "<code>domain.tld=xy</code>" rules (one per line).<br/>Also works with additional region codes: "<code>domain.ch=de-ch</code>"'),
             array('class' => 'help')
         );
 
@@ -304,44 +304,44 @@ class contentExtensionMultilingualConfiguration extends AdministrationPage
         $column->appendChildArray($form_redirect_mode);
 
 
-        // #3.2) Setting "Redirect Country"
+        // #3.2) Setting "Redirect Region"
 
         // get "redirect_county" settings from configuration and define fallback value
 
-        $redirect_country = Symphony::Configuration()->get('redirect_country', 'multilingual');
-        if (!$redirect_country) $redirect_country = '0';
+        $redirect_region = Symphony::Configuration()->get('redirect_region', 'multilingual');
+        if (!$redirect_region) $redirect_region = '0';
 
         // set redirect options
 
-        $redirect_country_options = [
+        $redirect_region_options = [
             '0' => __('Yes'),
-            '1' => __('Only if a matching country was detected'),
+            '1' => __('Only if a matching region was detected'),
             '2' => __('No'),
         ];
 
         // add redirect label
 
-        $form_redirect_country['br'] = new XMLElement('br');
-        $form_redirect_country['label'] = new XMLElement('p', __('Should the redirect event also point to a specific country?<br/><span class="help">This option requires at least one country-code in the "<code>countries</code>" field.</span>'));
+        $form_redirect_region['br'] = new XMLElement('br');
+        $form_redirect_region['label'] = new XMLElement('p', __('Should the redirect event also point to a specific region?<br/><span class="help">This option requires at least one region-code in the "<code>regions</code>" field.</span>'));
 
         // add redirect settings (radio buttons)
 
-        foreach ($redirect_country_options as $key => $value) {
+        foreach ($redirect_region_options as $key => $value) {
 
             $label = Widget::Label($value);
-            $radio = Widget::Input('multilingual[redirect_country]', strval($key), 'radio');
+            $radio = Widget::Input('multilingual[redirect_region]', strval($key), 'radio');
 
-            if ($redirect_country === strval($key)) {
+            if ($redirect_region === strval($key)) {
                 $radio->setAttribute('checked', '');
             }
 
             $label->prependChild($radio);
-            $form_redirect_country[$key] = $label;
+            $form_redirect_region[$key] = $label;
         }
 
         // append to column & group
 
-        $column->appendChildArray($form_redirect_country);
+        $column->appendChildArray($form_redirect_region);
         $group->appendChild($column);
 
 
@@ -427,7 +427,7 @@ class contentExtensionMultilingualConfiguration extends AdministrationPage
 
         $form_debug['help'] = new XMLElement(
             'p',
-            __('This option adds the following additional parameters to the XML output:<br/><br/><code>multilingual-language-source</code><br/><code>multilingual-country-source</code><br/><code>multilingual-browser-cookie</code><br/><code>multilingual-browser-header</code>'),
+            __('This option adds the following additional parameters to the XML output:<br/><br/><code>multilingual-language-source</code><br/><code>multilingual-region-source</code><br/><code>multilingual-browser-cookie</code><br/><code>multilingual-browser-header</code>'),
             array('class' => 'help')
         );
 
@@ -460,7 +460,7 @@ class contentExtensionMultilingualConfiguration extends AdministrationPage
 
         // add help text
 
-        $form_cookie_disable['help'] = new XMLElement('p', __("This option disables the multilingual cookie, so it won't be considered in the frontend language/country detection process."));
+        $form_cookie_disable['help'] = new XMLElement('p', __("This option disables the multilingual cookie, so it won't be considered in the frontend language/region detection process."));
         $form_cookie_disable['help']->setAttribute('class', 'help');
 
         // append to column, group & fieldset
@@ -507,10 +507,10 @@ class contentExtensionMultilingualConfiguration extends AdministrationPage
 
             $config = filter_var_array($_POST['multilingual'], FILTER_SANITIZE_STRING);
 
-            // validate and clean the language/country-code-input
+            // validate and clean the language/region-code-input
 
             $config[languages] = self::validateCodeString($config[languages]);
-            $config[countries] = self::validateCodeString($config[countries]);
+            $config[regions] = self::validateCodeString($config[regions]);
 
             // transform domain-configuration (each line representing one domain) into array and save domain configuration as comma-separated string
 
@@ -538,10 +538,10 @@ class contentExtensionMultilingualConfiguration extends AdministrationPage
 
                 if ($config[htaccess] === 'yes') {
 
-                    // create (blank) set of rules and insert the current set of languages and countries
+                    // create (blank) set of rules and insert the current set of languages and regions
 
                     $htaccess_create = multilingual::setHtaccessRewriteRules('create');
-                    $htaccess_edit = multilingual::setHtaccessRewriteRules('edit', $config[languages], $config[countries]);
+                    $htaccess_edit = multilingual::setHtaccessRewriteRules('edit', $config[languages], $config[regions]);
 
                 } else {
 
@@ -577,14 +577,14 @@ class contentExtensionMultilingualConfiguration extends AdministrationPage
     /**
      * VALIDATE CODE STRING
      *
-     * Helper function that validates the language/country-code-input
+     * Helper function that validates the language/region-code-input
      *
      * @since version 2.0.0
      */
 
     private function validateCodeString($string)
     {
-        // explode string and reduce each single language/country-code to 2 characters
+        // explode string and reduce each single language/region-code to 2 characters
 
         $codes = explode(',', str_replace(' ', '', $string));
 
