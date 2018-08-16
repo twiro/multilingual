@@ -607,7 +607,7 @@ class multilingual
             $url_path = Frontend::Page()->_param['current-path'];
 
             // if the url starts with a valid language-parameter – remove it
-            $url_path = (preg_match('/^\/([a-z]{2})\//', $url_path, $match) && in_array($match[1], self::$languages)) ? substr($url_path, 3) : $url_path;
+            $url_path = (preg_match('/^\/([a-z]{2})/', $url_path, $match) && in_array($match[1], self::$languages)) ? substr($url_path, 3) : $url_path;
 
             // get current query string (from Symphony Frontend Page object)
             $url_query_string = Frontend::Page()->_param['current-query-string'];
