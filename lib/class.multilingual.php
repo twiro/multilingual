@@ -317,7 +317,7 @@ class multilingual
 
         if (self::$regions && !self::$region) {
 
-            // …we need to have another look at the cookie…
+            // … we need to have another look at the cookie …
 
             if (!self::$cookie_disable && preg_match('/^([a-z]{2})-([a-z]{2})?/', $_COOKIE['multilingual'], $match) && in_array($match[2], self::$regions)) {
 
@@ -325,21 +325,26 @@ class multilingual
                 self::$region_source = 'cookie';
                 self::$region_log = 'Region-code detected by cookie (D)';
 
-            // …or at the browser…
+            // … or at the browser …
+            // (combining the two conditions in one if-statement didn't work (2018-09-15)
 
-            } else if ($match = self::detectBrowserLanguage() && in_array($match[2], self::$regions)) {
+            } else if ($match = self::detectBrowserLanguage()) {
 
-                self::$region = $match[2];
-                self::$region_source = 'browser';
-                self::$region_log = 'Region-code detected by browser header (E)';
+                if (in_array($match[2], self::$regions)) {
+                    self::$region = $match[2];
+                    self::$region_source = 'browser';
+                    self::$region_log = 'Region-code detected by browser header (E)';
+                }
+            }
 
             // … or fall back to the "default" region provided by the extension configuration
 
-            } else {
+            if (!self::$region) {
 
                 self::$region = self::$regions[0];
                 self::$region_source = 'default';
                 self::$region_log = 'No region could be detected, so we fall back to the first region provided by the configuration (F)';
+
             }
         }
     }
@@ -352,7 +357,7 @@ class multilingual
      *
      * If a valid match is found in the configuration the function will return an
      * array that contains the full assigned language-region-string, the extracted
-     * language-code and also the optional region-code (if it matches on of the
+     * language-code and also the optional region-code (if it matches one of the
      * configured regions).
      *
      * Example of domain configuration data and resulting output:

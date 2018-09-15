@@ -132,10 +132,12 @@ class Extension_Multilingual extends Extension
 
         if (version_compare($previousVersion, '2.0.0', '<')) {
 
-            // get exisiting languages/domain configuration
+            // get exisiting languages/domain configuration (including some values introduced in the 2.x beta- and -rc-releases
 
             $languages = Symphony::Configuration()->get('languages', 'multilingual');
-            $domains = Symphony::Configuration()->get('domains', 'multilingual');
+            $regions = Symphony::Configuration()->get('regions', 'multilingual') ? Symphony::Configuration()->get('regions', 'multilingual') : null;
+            $htaccess = Symphony::Configuration()->get('htaccess', 'multilingual') ? Symphony::Configuration()->get('htaccess', 'multilingual') : 'no';
+            $domains = Symphony::Configuration()->get('domains', 'multilingual') ? Symphony::Configuration()->get('domains', 'multilingual') : null;
 
             // add new configuration settings with their default values
 
@@ -143,8 +145,8 @@ class Extension_Multilingual extends Extension
                 array(
                     'multilingual' => array(
                         'languages' => $languages,
-	                    'regions' => null,
-                        'htaccess' => 'no',
+	                    'regions' => $regions,
+                        'htaccess' => $htaccess,
                         'domains' => $domains,
                         'redirect_mode' => '0',
                         'redirect_region' => '0',
