@@ -509,14 +509,14 @@ class contentExtensionMultilingualConfiguration extends AdministrationPage
 
             // validate and clean the language/region-code-input
 
-            $config[languages] = self::validateCodeString($config[languages]);
-            $config[regions] = self::validateCodeString($config[regions]);
+            $config['languages'] = self::validateCodeString($config['languages']);
+            $config['regions'] = self::validateCodeString($config['regions']);
 
             // transform domain-configuration (each line representing one domain) into array and save domain configuration as comma-separated string
 
-            $config[domains] = str_replace(' ', '', $config[domains]);
-            $config[domains] = preg_split("/\r\n|\n|\r/", $config[domains]);
-            $config[domains] = implode (", ", $config[domains]);
+            $config['domains'] = str_replace(' ', '', $config['domains']);
+            $config['domains'] = preg_split("/\r\n|\n|\r/", $config['domains']);
+            $config['domains'] = implode (", ", $config['domains']);
 
             // set configuration data
 
@@ -536,12 +536,12 @@ class contentExtensionMultilingualConfiguration extends AdministrationPage
 
                 // set htaccess rewrite rules
 
-                if ($config[htaccess] === 'yes') {
+                if ($config['htaccess'] === 'yes') {
 
                     // create (blank) set of rules and insert the current set of languages and regions
 
                     $htaccess_create = multilingual::setHtaccessRewriteRules('create');
-                    $htaccess_edit = multilingual::setHtaccessRewriteRules('edit', $config[languages], $config[regions]);
+                    $htaccess_edit = multilingual::setHtaccessRewriteRules('edit', $config['languages'], $config['regions']);
 
                 } else {
 
