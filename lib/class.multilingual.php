@@ -171,6 +171,8 @@ class multilingual
     {
         if (self::$languages = Symphony::Configuration()->get('languages', 'multilingual')) {
             self::$languages = explode(',', str_replace(' ', '', self::$languages));
+        } else {
+            self::$languages = array();
         }
     }
 
@@ -188,6 +190,8 @@ class multilingual
     {
         if (self::$regions = Symphony::Configuration()->get('regions', 'multilingual')) {
             self::$regions = explode(',', str_replace(' ', '', self::$regions));
+        } else {
+            self::$regions = array();
         }
     }
 
