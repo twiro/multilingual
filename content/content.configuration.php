@@ -63,7 +63,7 @@ class contentExtensionMultilingualConfiguration extends AdministrationPage
         $fieldset = new XMLElement('fieldset');
         $fieldset->setAttribute('class', 'settings');
         $fieldset->appendChild(
-            new XMLElement('legend', __('Multilingual Parameters'))
+            new XMLElement('legend', __('Languages'))
         );
 
         // create group
@@ -71,7 +71,7 @@ class contentExtensionMultilingualConfiguration extends AdministrationPage
         $group = new XMLElement('div', null, array('class' => 'two columns'));
 
 
-        // #1.1) Setting "languages"
+        // #1.1) LANGUAGES
 
         $column = new XMLElement('div', null, array('class' => 'column'));
 
@@ -83,7 +83,7 @@ class contentExtensionMultilingualConfiguration extends AdministrationPage
 
         // add settings for language codes
 
-        $form_languages['input'] = new XMLElement('label', __('Languages'), array('for' => 'settings-multilingual-languages'));
+        $form_languages['input'] = new XMLElement('label', __('Active Languages'), array('for' => 'settings-multilingual-languages'));
         $form_languages['input']->appendChild(
             Widget::Input(
                 'multilingual[languages]',
@@ -99,7 +99,7 @@ class contentExtensionMultilingualConfiguration extends AdministrationPage
 
         $form_languages['help'] = new XMLElement(
             'p',
-            __('Comma-separated list of <a href="http://en.wikipedia.org/wiki/ISO_639-1">ISO 639-1</a> language codes.'),
+            __('Comma-separated list of <a href="http://en.wikipedia.org/wiki/ISO_639-1">ISO 639-1</a> language codes that are accessible by all users.'),
             array('class' => 'help')
         );
 
@@ -109,7 +109,63 @@ class contentExtensionMultilingualConfiguration extends AdministrationPage
         $group->appendChild($column);
 
 
-        // #1.2) Setting "Regions"
+        // #1.2) RESTRICTED LANGUAGES
+
+        $column = new XMLElement('div', null, array('class' => 'column'));
+
+        // get "regions" settings from configuration
+
+        $languages_restricted = Symphony::Configuration()->get('languages_restricted', 'multilingual');
+        $languages_restricted = str_replace(' ', '',   $languages_restricted);
+        $languages_restricted = str_replace(',', ', ', $languages_restricted);
+
+        // build input field
+
+        $form_languages_restricted['input'] = new XMLElement('label', __('Restricted Languages <i>Optional</i>'), array('for' => 'settings-multilingual-languages-restricted'));
+        $form_languages_restricted['input']->appendChild(
+            Widget::Input(
+                'multilingual[languages_restricted]',
+                $languages_restricted,
+                'text',
+                array(
+                    'id' => 'settings-multilingual-languages-restricted'
+                )
+            )
+        );
+
+        // add help text
+
+        $form_languages_restricted['help'] = new XMLElement(
+            'p',
+            __('Additional list of language codes that are only accessible by logged in authors.'),
+            array('class' => 'help')
+        );
+
+        // append to column & group
+
+        $column->appendChildArray($form_languages_restricted);
+        $group->appendChild($column);
+
+        // append column to fieldset & context
+
+        $fieldset->appendChild($group);
+        $this->Form->appendChild($fieldset);
+
+
+        // FIELDSET #2 "REGIONS"
+
+        $fieldset = new XMLElement('fieldset');
+        $fieldset->setAttribute('class', 'settings');
+        $fieldset->appendChild(
+            new XMLElement('legend', __('Regions'))
+        );
+
+        // create group
+
+        $group = new XMLElement('div', null, array('class' => 'two columns'));
+
+
+        // #2.1) REGIONS
 
         $column = new XMLElement('div', null, array('class' => 'column'));
 
@@ -121,7 +177,7 @@ class contentExtensionMultilingualConfiguration extends AdministrationPage
 
         // add settings for region codes
 
-        $form_regions['input'] = new XMLElement('label', __('Regions <i>Optional</i>'), array('for' => 'settings-multilingual-regions'));
+        $form_regions['input'] = new XMLElement('label', __('Active Regions <i>Optional</i>'), array('for' => 'settings-multilingual-regions'));
         $form_regions['input']->appendChild(
             Widget::Input(
                 'multilingual[regions]',
@@ -137,7 +193,7 @@ class contentExtensionMultilingualConfiguration extends AdministrationPage
 
         $form_regions['help'] = new XMLElement(
             'p',
-            __('Comma-separated list of <a href="https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2">ISO 3166-1 alpha-2</a> region codes.'),
+            __('Comma-separated list of <a href="https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2">ISO 3166-1 alpha-2</a> region codes that are accessible by all users.'),
             array('class' => 'help')
         );
 
@@ -146,18 +202,56 @@ class contentExtensionMultilingualConfiguration extends AdministrationPage
         $column->appendChildArray($form_regions);
         $group->appendChild($column);
 
+
+        // #2.2) RESTRICTED REGIONS
+
+        $column = new XMLElement('div', null, array('class' => 'column'));
+
+        // get "regions" settings from configuration
+
+        $regions_restricted = Symphony::Configuration()->get('regions_restricted', 'multilingual');
+        $regions_restricted = str_replace(' ', '',   $regions_restricted);
+        $regions_restricted = str_replace(',', ', ', $regions_restricted);
+
+        // add settings for region codes
+
+        $form_regions_restricted['input'] = new XMLElement('label', __('Restricted Regions <i>Optional</i>'), array('for' => 'settings-multilingual-regions-restricted'));
+        $form_regions_restricted['input']->appendChild(
+            Widget::Input(
+                'multilingual[regions_restricted]',
+                $regions_restricted,
+                'text',
+                array(
+                    'id' => 'settings-multilingual-regions-restricted'
+                )
+            )
+        );
+
+        // add help text
+
+        $form_regions_restricted['help'] = new XMLElement(
+            'p',
+            __('Additional list of region codes that are only accessible by logged in authors.'),
+            array('class' => 'help')
+        );
+
+        // append to column & group
+
+        $column->appendChildArray($form_regions_restricted);
+        $group->appendChild($column);
+
         // append column to fieldset & context
 
         $fieldset->appendChild($group);
         $this->Form->appendChild($fieldset);
 
 
-        // FIELDSET #2 "MULTILINGUAL ROUTING"
+        // FIELDSET #3 "ROUTING"
 
         $fieldset = new XMLElement('fieldset');
         $fieldset->setAttribute('class', 'settings');
         $fieldset->appendChild(
-            new XMLElement('legend', __('Multilingual Routing'))
+            new XMLElement('legend', __('Routing'))
         );
 
         // create new group & column
@@ -166,7 +260,7 @@ class contentExtensionMultilingualConfiguration extends AdministrationPage
         $column = new XMLElement('div', null, array('class' => 'column'));
 
 
-        // #2.1) Setting "htaccess"
+        // #3.1) HTACCESS
 
         // get "htaccess" settings from configuration
 
@@ -207,7 +301,7 @@ class contentExtensionMultilingualConfiguration extends AdministrationPage
         $column = new XMLElement('div', null, array('class' => 'column'));
 
 
-        // #2.2) setting "Domain Language Configuration"
+        // #3.2) DOMAIN LANGUAGE CONFIGURATION
 
         // get "domains" settings from configuration
 
@@ -249,12 +343,12 @@ class contentExtensionMultilingualConfiguration extends AdministrationPage
         $this->Form->appendChild($fieldset);
 
 
-        // FIELDSET #3 "MULTILINGUAL REDIRECT"
+        // FIELDSET #4 "REDIRECTING"
 
         $fieldset = new XMLElement('fieldset');
         $fieldset->setAttribute('class', 'settings');
         $fieldset->appendChild(
-            new XMLElement('legend', __('Multilingual Redirect'))
+            new XMLElement('legend', __('Redirecting'))
         );
         $fieldset->appendChild(
             new XMLElement('p', __('Define the behavior of the <br/>multilingual redirect event.'), array('class' => 'help'))
@@ -266,7 +360,7 @@ class contentExtensionMultilingualConfiguration extends AdministrationPage
         $column = new XMLElement('div', null, array('class' => 'column'));
 
 
-        // #3.1) Setting "Redirect Mode"
+        // #4.1) REDIRECT MODE
 
         // get "redirect" settings from configuration
 
@@ -304,7 +398,7 @@ class contentExtensionMultilingualConfiguration extends AdministrationPage
         $column->appendChildArray($form_redirect_mode);
 
 
-        // #3.2) Setting "Redirect Region"
+        // #4.2) REDIRECT REGION
 
         // get "redirect_county" settings from configuration and define fallback value
 
@@ -322,7 +416,7 @@ class contentExtensionMultilingualConfiguration extends AdministrationPage
         // add redirect label
 
         $form_redirect_region['br'] = new XMLElement('br');
-        $form_redirect_region['label'] = new XMLElement('p', __('Should the redirect event also point to a specific region?<br/><span class="help">This option requires at least one region-code in the "<code>regions</code>" field.</span>'));
+        $form_redirect_region['label'] = new XMLElement('p', __('Should the redirect event also point to a specific region?<br/><span class="help">This option requires at least one region-code in the "<code>Active Regions</code>" field.</span>'));
 
         // add redirect settings (radio buttons)
 
@@ -345,7 +439,7 @@ class contentExtensionMultilingualConfiguration extends AdministrationPage
         $group->appendChild($column);
 
 
-        // #3.3) Setting "Redirect Method"
+        // #4.3) REDIRECT METHOD
 
         $column = new XMLElement('div', null, array('class' => 'column'));
 
@@ -357,23 +451,29 @@ class contentExtensionMultilingualConfiguration extends AdministrationPage
         // set redirect_method options
 
         $redirect_method_options = [
-            array('0', $redirect_method === '0', 'domain.tld → domain.tld/xy/'),
-            array('1', $redirect_method === '1', 'domain.tld → domain.tld?language=xy'),
-            array('2', $redirect_method === '2', 'domain.tld → domain.xy')
+            '0' => __('domain.tld → domain.tld/xy/'),
+            '1' => __('domain.tld → domain.tld?language=xy'),
+            '2' => __('domain.tld → domain.xy'),
         ];
+        
+        // add redirect method label
 
-        // add redirect_method settings
+        $form_redirect_method['label'] = new XMLElement('p', __('Redirect Method'));
 
-        $form_redirect_method['select'] = new XMLElement('label', __('Redirect method'), array('for' => 'settings-multilingual-redirect-method'));
-        $form_redirect_method['select']->appendChild(
-            Widget::Select(
-                'multilingual[redirect_method]',
-                $redirect_method_options,
-                array(
-                    'id' => 'settings-multilingual-redirect-method'
-                )
-            )
-        );
+        // add redirect method settings (radio buttons)
+
+        foreach ($redirect_method_options as $key => $value) {
+
+            $label = Widget::Label($value);
+            $radio = Widget::Input('multilingual[redirect_method]', strval($key), 'radio');
+
+            if ($redirect_method === strval($key)) {
+                $radio->setAttribute('checked', '');
+            }
+
+            $label->prependChild($radio);
+            $form_redirect_method[$key] = $label;
+        }
 
         // add help text
 
@@ -391,18 +491,18 @@ class contentExtensionMultilingualConfiguration extends AdministrationPage
         $this->Form->appendChild($fieldset);
 
 
-        // FIELDSET #4 "MULTILINGUAL DEBUG"
+        // FIELDSET #5 "DEBUGGING"
 
         $fieldset = new XMLElement('fieldset');
         $fieldset->setAttribute('class', 'settings');
-        $fieldset->appendChild(new XMLElement('legend', __('Multilingual Debug')));
+        $fieldset->appendChild(new XMLElement('legend', __('Debugging')));
         
         // create group
 
         $group = new XMLElement('div', null, array('class' => 'two columns'));
 
 
-        // #4.1) Setting "debug"
+        // #5.1) DEBUG
 
         $column = new XMLElement('div', null, array('class' => 'column'));
 
@@ -437,7 +537,7 @@ class contentExtensionMultilingualConfiguration extends AdministrationPage
         $group->appendChild($column);
 
 
-        // #4.2) Setting "cookie_disable"
+        // #5.2) DISABLE COOKIE
 
         $column = new XMLElement('div', null, array('class' => 'column'));
 
@@ -510,7 +610,9 @@ class contentExtensionMultilingualConfiguration extends AdministrationPage
             // validate and clean the language/region-code-input
 
             $config['languages'] = self::validateCodeString($config['languages']);
+            $config['languages_restricted'] = self::validateCodeString($config['languages_restricted']);
             $config['regions'] = self::validateCodeString($config['regions']);
+            $config['regions_restricted'] = self::validateCodeString($config['regions_restricted']);
 
             // transform domain-configuration (each line representing one domain) into array and save domain configuration as comma-separated string
 
@@ -538,10 +640,16 @@ class contentExtensionMultilingualConfiguration extends AdministrationPage
 
                 if ($config['htaccess'] === 'yes') {
 
+                    // join active and restricted languages/regions to one comma-separated string
+                    // at the moment this process assumes there is at least one active language/region if a restriced language/region is set
+
+                    $config_languages = ($config['languages_restricted']) ? $config['languages'] . ', ' . $config['languages_restricted'] : $config['languages'];
+                    $config_regions = ($config['regions_restricted']) ? $config['regions'] . ', ' . $config['regions_restricted'] : $config['regions'];
+
                     // create (blank) set of rules and insert the current set of languages and regions
 
                     $htaccess_create = multilingual::setHtaccessRewriteRules('create');
-                    $htaccess_edit = multilingual::setHtaccessRewriteRules('edit', $config['languages'], $config['regions']);
+                    $htaccess_edit = multilingual::setHtaccessRewriteRules('edit', $config_languages, $config_regions);
 
                 } else {
 

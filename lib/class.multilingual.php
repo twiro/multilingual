@@ -23,13 +23,25 @@ class multilingual
     /**
      * $languages
      *
-     * An array of ISO 639-1 language-codes that represent the configured
-     * languages offered by this extension.
+     * An array of ISO 639-1 language-codes that represent the active languages
+     * offered by this extension.
      *
      * @var array
      */
 
     static $languages;
+
+
+    /**
+     * $languages_restricted
+     *
+     * An array of ISO 639-1 language-codes that represent optional restricted
+     * languages offered by this extension.
+     *
+     * @var array
+     */
+
+    static $languages_restricted;
 
 
     /**
@@ -85,13 +97,25 @@ class multilingual
     /**
      * $regions
      *
-     * An array of ISO 3166-1 region-codes that represent the configured
-     * regions offered by this extension.
+     * An array of ISO 3166-1 region-codes that represent the active regions
+     * offered by this extension.
      *
      * @var array
      */
 
     static $regions;
+
+
+    /**
+     * $regions_restricted
+     *
+     * An array of ISO 3166-1 region-codes that represent optional restricted
+     * regions offered by this extension.
+     *
+     * @var array
+     */
+
+    static $regions_restricted;
 
 
     /**
@@ -169,10 +193,21 @@ class multilingual
 
     public function getLanguages()
     {
+        // look for the active languages in the configuration file and ensure the variable is set as an array if none are found
+        
         if (self::$languages = Symphony::Configuration()->get('languages', 'multilingual')) {
             self::$languages = explode(',', str_replace(' ', '', self::$languages));
         } else {
             self::$languages = array();
+        }
+        
+        // if the user is logged in also look for additional 'restricted' languages and merge them with the active languages array
+        
+        if (Symphony::isLoggedIn() && self::$languages_restricted = Symphony::Configuration()->get('languages_restricted', 'multilingual')) {
+            self::$languages_restricted = explode(',', str_replace(' ', '', self::$languages_restricted));
+            self::$languages = array_merge(self::$languages, self::$languages_restricted);
+        } else {
+            self::$languages_restricted = array();
         }
     }
 
@@ -188,10 +223,21 @@ class multilingual
 
     public function getRegions()
     {
+        // look for the active regions in the configuration file and ensure the variable is set as an array if none are found
+        
         if (self::$regions = Symphony::Configuration()->get('regions', 'multilingual')) {
             self::$regions = explode(',', str_replace(' ', '', self::$regions));
         } else {
             self::$regions = array();
+        }
+        
+        // if the user is logged in also look for additional 'restricted' regions and merge them with the active regions array
+        
+        if (Symphony::isLoggedIn() && self::$regions_restricted = Symphony::Configuration()->get('regions_restricted', 'multilingual')) {
+            self::$regions_restricted = explode(',', str_replace(' ', '', self::$regions_restricted));
+            self::$regions = array_merge(self::$regions, self::$regions_restricted);
+        } else {
+            self::$regions_restricted = array();
         }
     }
 

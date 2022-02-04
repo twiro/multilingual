@@ -32,7 +32,7 @@ class eventmultilingual_redirect extends Event
                 'website' => 'https://github.com/twiro/multilingual/'
             ),
 	        'version'      => '2.0.0',
-	        'release-date' => '2018-08-07',
+	        'release-date' => '2022-02-04',
 	        'trigger-condition' => ''
         );
     }

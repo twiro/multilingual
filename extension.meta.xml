@@ -20,7 +20,7 @@
 		</author>
 	</authors>
 	<releases>
-	<release version="2.0.0-rc.6" date="2019-10-07" min="2.3.3" max="2.x.x">
+	<release version="2.0.0-rc.7" date="2022-02-04" min="2.3.3" max="2.x.x">
 		- Improved frontend language detection ([#12](https://github.com/twiro/multilingual/issues/12))
 		- Added support for most common multilingual url-structures ([#12](https://github.com/twiro/multilingual/issues/12))
 		- Added support for (sub)domain-language-mapping ([#12](https://github.com/twiro/multilingual/issues/12))
@@ -28,6 +28,7 @@
 		- Added support for htaccess-rewrite-rules ([#15](https://github.com/twiro/multilingual/issues/15))
 		- Added datasource `multilingual` (containing information about all provided languages and regions)
 		- Added event `multilingual redirect` and added configuration-settings for different scenarios ([#10](https://github.com/twiro/multilingual/issues/10))
+		- Added support for 'restricted' languages and regions ([#23](https://github.com/twiro/multilingual/issues/23))
 		- Fixed issue where redirecting looses the url query string ([#18](https://github.com/twiro/multilingual/issues/18))
 		- Fixed configuration errors in PHP 7.2 ([#21](https://github.com/twiro/multilingual/issues/21))
 		- Removed the $languages-parameter (listing all provided languages) from the parameter pool

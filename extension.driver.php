@@ -145,7 +145,9 @@ class Extension_Multilingual extends Extension
                 array(
                     'multilingual' => array(
                         'languages' => $languages,
-	                    'regions' => $regions,
+                        'languages_restricted' => null,
+                        'regions' => $regions,
+                        'regions_restricted' => null,
                         'htaccess' => $htaccess,
                         'domains' => $domains,
                         'redirect_mode' => '0',
